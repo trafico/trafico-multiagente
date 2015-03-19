@@ -1,4 +1,4 @@
-Este es el projecto de la clase Tópicos avanzados en inteligencia artificial distribuida y sistemas multiagente 2015
+Este es el proyecto de la clase Tópicos avanzados en inteligencia artificial distribuida y sistemas multiagente 2015
 
 This project can be imported into IDEs like eclipse.
 
