@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-		<H3>Semaforo simple.</H3>
+	<H3>Semaforo simple.</H3>
 	Describe un semarofo con temporizador.
 	<H4>Explicacion</H4>
 	Este semaro cambia de color dando acceso a los carros, por el momento
@@ -13,16 +13,44 @@
 	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
 	name="SemaforoSimpleTempo"
 	package="lights">
+	
+	<beliefs>
+			<!-- Esta creencia determina el numero de segundos que han transcurrido. -->
+			<belief name="segundosTrans" class="int">
+				<fact>0</fact>
+			</belief>
+			
+			<!-- Esta creencia determina el estado del semaforo. -->
+			<belief name="estadoSemaforo" class="int">
+				<fact>0</fact>
+			</belief>
+			
+	</beliefs>
 
 	<plans>
-		<!-- A translation plan, from which an instance is created
-			when the agent is born. Reacts on translation request messages. -->
+	
+		<!-- Plan default, aumenta el contador del semaforo. -->
+		<plan name="contadorPlanNormal">
+			<body class="SemaforoSimpleContadorPlan"/>
+		</plan>
+		<!-- Cambia el estado del semaforo al recibir una peticion. -->
 		<plan name="egtrans">
 			<body class="SemaforoSimpleCambioLuzTempoPlan"/>
 			<waitqueue>
 				<messageevent ref="request_translation"/>
 			</waitqueue>
 		</plan>
+		<!-- Este plan cambia el estado del semaforo segun el numero de segundos transcurridos
+			sin trafico ni comunicacion, cambia cada 10 segundos -->
+		<plan name="cambiaEstadoNormal">
+			<body class="CambiaEstadoNormalPlan"/>
+			<trigger>
+				<condition>
+					$beliefbase.segundosTrans>0 &amp;&amp; $beliefbase.segundosTrans%10==0
+				</condition>
+			</trigger>
+		</plan>
+		
 	</plans>
 
 	<events>
@@ -42,7 +70,7 @@
 	<configurations>
 		<configuration name="default">
 			<plans>
-				<initialplan ref="egtrans"/>
+				<initialplan ref="contadorPlanNormal"/>
 			</plans>
 		</configuration>
 	</configurations>

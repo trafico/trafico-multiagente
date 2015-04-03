@@ -6,14 +6,14 @@ import jadex.bdi.runtime.Plan;
 
 import java.util.*;
 
-public class SemaforoSimpleCambioLuzTempoPlan extends Plan {
+public class SemaforoSimpleCambioLuzPlan extends Plan {
 	
 	protected String estadoSemaforo; // Puede ser solamente roja o verde
 	
-	public SemaforoSimpleCambioLuzTempoPlan() {
+	public SemaforoSimpleCambioLuzPlan() {
 	       // Initialization code.
 		estadoSemaforo = "ROJO";
-		System.out.println("Created: "+this+"Estado: "+estadoSemaforo);
+		System.out.println("Created: "+this);
 		
 	}
 	
@@ -25,17 +25,16 @@ public class SemaforoSimpleCambioLuzTempoPlan extends Plan {
 		}
 		return estadoSemaforo;
 	}
-	
+
 	   public void body() {
 	       // Plan code.
-		   while (true) {
-			   IMessageEvent me = waitForMessageEvent("request_translation");
+		  while(true){
+			   
+			  IMessageEvent me = waitForMessageEvent("request_translation");
 			    String eword = (String)me.getParameter(SFipa.CONTENT).getValue();
-			    System.out.println(cambiarLuz());				
-			    int cnt = ((Integer)getBeliefbase().getBelief("segundosTrans").getFact()).intValue();
-			    getBeliefbase().getBelief("segundosTrans").setFact(new Integer(cnt+1));
-			    System.out.println("Segundos transcurridos:"+(cnt+1));
-		   }
+			   System.out.println(cambiarLuz());
+		  }
+		   
 	   }
 
 }
