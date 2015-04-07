@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	<H3>Semaforo simple.</H3>
-	Describe un semarofo con temporizador.
-	<H4>Explicacion</H4>
-	Este semaro cambia de color dando acceso a los carros, por el momento
-	no tiene creencias ni intenciones. Solo recibe una peticion de cambio mediante
-	la interfaz conversacion de jadex
+	<H3>Semáforo simple.</H3>
+	Describe un semárofo con temporizador.
+	<H4>Explicación</H4>
+	Este semáforo cambia de color dando acceso a los carros, por el momento
+	no tiene intenciones. El cambio es mediante un temporizador.
  -->
 <agent xmlns="http://jadex.sourceforge.net/jadex"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -28,6 +27,26 @@
         
         <!-- Esta creencia determina el estado del semaforo. -->
         <belief name="estadoSemaforo" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="estadoSemaforoNorte" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Sur. -->
+        <belief name="estadoSemaforoSur" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Este. -->
+        <belief name="estadoSemaforoEste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Oeste. -->
+        <belief name="estadoSemaforoOeste" class="int">
             <fact>0</fact>
         </belief>
 	</beliefs>
