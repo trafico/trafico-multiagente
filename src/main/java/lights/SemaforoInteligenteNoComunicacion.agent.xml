@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	<H3>Semáforo inteligente no comunicación.</H3>
+	Describe un semárofo con temporizador y una visión del ambiente.
+	<H4>Explicacion</H4>
+	Este semáforo cambia de color dando acceso a los carros, por el momento
+	no tiene intenciones. El cambio es mediante un temporizador, según el tráfico en
+	alguna línea el semáforo cambia su estrategia. Este semáforo no permite la 
+	comunicación con otros semáforos vecinos o con los autos.
+ -->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
+	name="SemaforoInteligenteNoComunicacion"
+	package="lights">
+
+	<imports>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+		<import>jadex.bridge.fipa.*</import>
+	</imports>
+
+	<beliefs>
+		<!-- Esta creencia determina el numero de segundos que han transcurrido. -->
+        <belief name="segundosTrans" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Esta creencia determina el estado del semaforo. -->
+        <belief name="estadoSemaforo" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="estadoSemaforoNorte" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Sur. -->
+        <belief name="estadoSemaforoSur" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Este. -->
+        <belief name="estadoSemaforoEste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Oeste. -->
+        <belief name="estadoSemaforoOeste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina si hay trafico en la linea que es tangente al semaforo. -->
+        <belief name="traficoLineaNorte" class="int">
+            <fact>0</fact>
+        </belief>
+        
+           <!-- Esta creencia determina si hay trafico en la linea que es perpendicular al semaforo. -->
+        <belief name="traficoLineaSur" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <belief name="traficoLineaEste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Esta creencia determina si hay trafico en la linea que es perpendicular al semaforo. -->
+        <belief name="traficoLineaOeste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina si norte(1), este(2), sur(3), oeste(4). -->
+        <belief name="lineaActual" class="int">
+            <fact>1</fact>
+        </belief>
+         <!-- Esta creencia determina posicion en x. -->
+        <belief name="posX" class="int">
+            <fact>0</fact>
+        </belief>
+        <!-- Esta creencia determina posicion en y. -->
+        <belief name="posY" class="int">
+            <fact>0</fact>
+        </belief>
+	</beliefs>
+
+	<plans>
+		 <!-- Plan default, aumenta el contador del semaforo. -->
+        <plan name="contadorPlanNormal">
+            <body class="SemaforoSimpleContadorPlan"/>
+        </plan>
+       	<!-- Este plan cambia el estado del semaforo segun el numero de segundos transcurridos
+         sin trafico ni comunicacion, cambia cada 10 segundos -->
+        <plan name="cambiaEstadoNormal">
+            <body class="CambiaEstadoNormalPlan"/>
+            <trigger>
+                <condition>
+                    $beliefbase.segundosTrans>0 &amp;&amp; $beliefbase.segundosTrans%10==0
+                </condition>
+            </trigger>
+        </plan>
+        <!-- Este plan permite conocer el estado del semaforo -->
+		<plan name="peticionEstado">
+			<body class="PeticionEstadoPlan"/>
+			<trigger>
+				<messageevent ref="request_state"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea tangente del semaforo, si hay trafico o no -->
+		<plan name="peticionGetTangente">
+			<body class="PeticionLineaTangentePlan"/>
+			<trigger>
+				<messageevent ref="request_tangente"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea perpendicular del semaforo, si hay trafico o no -->
+		<plan name="peticionGetPerpendicular">
+			<body class="PeticionLineaPerpendicularPlan"/>
+			<trigger>
+				<messageevent ref="request_perpendicular"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetTangente">
+			<body class="SetLineaTangentePlan"/>
+			<trigger>
+				<messageevent ref="set_tangente"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetNorte">
+			<body class="PeticionLineaNortePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_norte"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetNorte">
+			<body class="SetLineaNortePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_norte"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetSur">
+			<body class="PeticionLineaSurPlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_sur"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetSur">
+			<body class="SetLineaSurPlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_sur"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetEste">
+			<body class="PeticionLineaEstePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_este"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetEste">
+			<body class="SetLineaEstePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_este"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetOeste">
+			<body class="PeticionLineaOestePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_oeste"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetOeste">
+			<body class="SetLineaOestePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_oeste"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetOesteEstado">
+			<body class="PeticionOestePlan"/>
+			<trigger>
+				<messageevent ref="request_oeste"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetEsteEstado">
+			<body class="PeticionEstePlan"/>
+			<trigger>
+				<messageevent ref="request_este"/>
+			</trigger>
+		</plan>
+			<plan name="peticionGetSurEstado">
+			<body class="PeticionSurPlan"/>
+			<trigger>
+				<messageevent ref="request_sur"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetNorteEstado">
+			<body class="PeticionNortePlan"/>
+			<trigger>
+				<messageevent ref="request_norte"/>
+			</trigger>
+		</plan>
+		<plan name="peticionPosicion">
+			<body class="PeticionPosicionPlan"/>
+			<trigger>
+				<messageevent ref="request_pos"/>
+			</trigger>
+		</plan>
+		<plan name="setPosicion">
+			<body class="SetPosicionPlan"/>
+			<trigger>
+				<messageevent ref="set_pos"/>
+			</trigger>
+		</plan>
+	</plans>
+
+	<events>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="request_state" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request state")</match>
+		</messageevent>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="inform" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		<!-- Consulta el estado de la linea tangente del agente. -->
+		<messageevent name="request_tangente" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request tangente")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea perpendicular del agente. -->
+		<messageevent name="request_perpendicular" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request perpendicular")</match>
+		</messageevent>
+		<!-- Pone un nuevo valor a la linea tangente del agente. -->
+		<messageevent name="set_tangente" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set tangente")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea norte del agente. -->
+		<messageevent name="request_trafico_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico norte")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea norte del agente. -->
+		<messageevent name="set_trafico_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico norte")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea sur del agente. -->
+		<messageevent name="request_trafico_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico sur")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea sur del agente. -->
+		<messageevent name="set_trafico_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico sur")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea este del agente. -->
+		<messageevent name="request_trafico_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico este")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea este del agente. -->
+		<messageevent name="set_trafico_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico este")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea oeste del agente. -->
+		<messageevent name="request_trafico_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico oeste")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea oeste del agente. -->
+		<messageevent name="set_trafico_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico oeste")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request oeste")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request este")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request norte")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request sur")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_pos" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request posicion")</match>
+		</messageevent>
+		
+		<messageevent name="set_pos" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set posicion")</match>
+		</messageevent>
+	</events>
+
+	<properties>
+		<!-- Only log outputs >= level are printed. -->
+		<!-- <property name="logging.level">Level.INFO</property> -->
+ 		<!-- The default parent handler prints out log messages on the console. -->
+		<property name="logging.useParentHandlers">true</property>
+		<!-- Debugging flag. -->
+		<!-- <property name="debugging">true</property> -->
+    </properties>
+    
+    <configurations>
+		<configuration name="default">
+			<plans>
+				<initialplan ref="contadorPlanNormal"/>
+			</plans>
+		</configuration>
+ 	</configurations>
+
+</agent>
+

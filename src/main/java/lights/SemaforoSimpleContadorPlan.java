@@ -25,7 +25,11 @@ public class SemaforoSimpleContadorPlan extends Plan {
 	public void body() {
 		while(true) {
 			int cnt = ((Integer)getBeliefbase().getBelief("segundosTrans").getFact()).intValue();
-		    getBeliefbase().getBelief("segundosTrans").setFact(new Integer(cnt+1));
+			if (cnt == 10)
+				cnt = 0;
+			else 
+				cnt = cnt +1;
+		    getBeliefbase().getBelief("segundosTrans").setFact(new Integer(cnt));
 		    try {
 		        Thread.sleep(1000);                 //1000 millisegundos un segundo : )
 		    } catch(InterruptedException ex) {

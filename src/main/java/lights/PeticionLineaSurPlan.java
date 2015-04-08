@@ -5,10 +5,10 @@ import jadex.bdi.runtime.IMessageEvent;
 import jadex.bdi.runtime.Plan;
 
 
-public class PeticionEstadoPlan extends Plan {
+public class PeticionLineaSurPlan extends Plan {
 
 	
-	public PeticionEstadoPlan() {
+	public PeticionLineaSurPlan() {
 	       // Initialization code.
 		System.out.println("Created Peticion: "+this);
 	}
@@ -18,10 +18,10 @@ public class PeticionEstadoPlan extends Plan {
 			String	reply;
 			String	content;
 			IMessageEvent me = (IMessageEvent)getReason(); //El mensaje que recibe el agente
-			int cnt = ((Integer)getBeliefbase().getBelief("estadoSemaforo").getFact()).intValue(); //Recupero el estado del semaro
-			System.out.println("Estado Actual del Semaforo: "+cnt);
+			int cnt = ((Integer)getBeliefbase().getBelief("traficoLineaSur").getFact()).intValue(); //Recupero el estado del semaro
+			//System.out.println("Estado Actual Trafico: "+cnt);
 			reply = "inform";
-			content = "EstadoPeticionEstadoPlan.java: "+cnt;
+			content = "Estado: "+cnt;
 			IMessageEvent re = getEventbase().createReply(me, reply);
 			re.getParameter(SFipa.CONTENT).setValue(content);
 			sendMessage(re);
