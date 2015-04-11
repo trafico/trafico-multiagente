@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<applicationtype xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:env="http://jadex.sourceforge.net/jadex-envspace"
+	name="AmbienteTrafico" package="environment">
+	
+<imports>
+		<import>jadex.bridge.IComponentIdentifier</import>
+		<import>jadex.extension.envsupport.environment.*</import>
+		<import>jadex.extension.envsupport.environment.space2d.*</import>
+		<import>jadex.extension.envsupport.environment.RoundBasedExecutor</import>
+		<import>jadex.extension.envsupport.math.*</import>
+		<import>jadex.bridge.service.clock.IClockService</import>
+		<import>jadex.extension.envsupport.dataview.*</import>
+		<import>jadex.extension.envsupport.observer.perspective.*</import>
+		<import>jadex.bdi.planlib.*</import>
+	</imports>
+<extensiontypes>
+
+<!-- Declaration of a grid environment as space type. -->
+<env:envspacetype name="tm2dspace" width="32" height="32" class="Grid2D">
+
+
+		<!-- Declaracion de objetos que estarán en el ambiente -->
+		<env:objecttype name="automovil">
+					<env:property name="vision_range">0</env:property>
+					<env:property name="position" event="true"/>
+					<env:property name="velocidad" event="true"/>
+		</env:objecttype>
+		<env:objecttype name="semaforo">
+					<env:property name="vision_range">0</env:property>
+					<env:property name="position" event="true"/>
+		</env:objecttype>
+		<env:objecttype name="cuadra">
+		<!-- Sin propiedades, es para crear los obstáculos -->
+		</env:objecttype>
+		
+<env:dataviews>
+				<env:dataview name="view_all" class="GeneralDataView2D" />
+				
+</env:dataviews>
+			
+
+<env:perspectives>
+				<env:perspective name="icons" class="Perspective2D" >	
+						<env:drawable objecttype="cuadra" width="1" height="1">
+								<env:texturedrectangle layer="1" height="8" width="8" imagepath="src/main/java/environment/imagenes/cuadra.png"/>
+						</env:drawable>	
+						<env:drawable objecttype="automovil" width="1" height="1" >
+								<env:texturedrectangle layer="2" height="1" width="1" imagepath="src/main/java/environment/imagenes/carrito.png"/>
+						</env:drawable>
+						<env:drawable objecttype="semaforo" width="1" height="1" >
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png"/>
+						</env:drawable>
+						<env:prelayers>
+								<env:tiledlayer width="1.0" height="1.0" imagepath="src/main/java/environment/imagenes/calle.png" />
+								<env:gridlayer width="1.0" height="1.0" color="black" />
+						</env:prelayers>
+				</env:perspective>
+</env:perspectives>
+<!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
+			<env:spaceexecutor class="RoundBasedExecutor">
+				<env:property name="space">$space</env:property>
+				<env:property name="execution_monitoring">true</env:property>
+			</env:spaceexecutor>
+</env:envspacetype>
+	
+</extensiontypes>
+<configurations>
+		<configuration name="default">
+			<extensions>
+				<env:envspace name="my2dspace" type="tm2dspace"  >
+					<env:objects>
+						<!-- Firestation with 3 brigades -->
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 6)</env:property>
+						</env:object>
+							<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 26)</env:property>
+						</env:object>
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(2.5, 1.5)</env:property>
+							
+						</env:object>
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(6.5, 11.5)</env:property>
+							
+						</env:object>
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(15.5, 21.5)</env:property>
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 1)</env:property>
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 1)</env:property>
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 11)</env:property>
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 21)</env:property>
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 11)</env:property>
+							
+						</env:object>
+					</env:objects>
+					<env:observers>
+						<env:observer name="world" dataview="view_all" perspective="icons"/>
+					</env:observers>
+				</env:envspace>
+			</extensions>
+		</configuration>
+</configurations>	
+
+</applicationtype>
