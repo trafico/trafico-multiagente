@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	<H3>Auto simple.</H3>
+	Describe al agente del auto más simple.
+	<H4>Explicacion</H4>
+	Este auto es el modelo más simple aún, avanza hasta llegar a su destino.
+ -->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
+	name="SemaforoInteligenteNoComunicacion"
+	package="lights">
+
+	<imports>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+		<import>jadex.bridge.fipa.*</import>
+	</imports>
+
+	<beliefs>
+		<!-- Indica si el auto está detenido o avanzando. -->
+        <belief name="ID_CAR" class="String">
+            <fact>""</fact>
+        </belief>
+	
+	
+		<!-- Indica si el auto está detenido o avanzando. -->
+        <belief name="isAvanzando" class="boolean">
+            <fact>true</fact>
+        </belief>
+	
+		<!-- posición x inicial. -->
+        <belief name="x_ini" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- posición y inicial. -->
+        <belief name="y_ini" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- posición x final. -->
+        <belief name="x_fin" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- posición y inicial. -->
+        <belief name="y_fin" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- posición x actual del auto. -->
+        <belief name="pox" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- posición y actual. -->
+        <belief name="poy" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Indica la dirección actual en la que avanza el coche: 0:norte, 1:este, 2:sur, 3:oeste. -->
+        <belief name="direccion" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Velocidad actual del vehículo. -->
+        <belief name="velocidad" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Velocidad máxima permitida dependiento de la calle donde se encuentra. -->
+        <belief name="vel_max" class="int">
+            <fact>0</fact>
+        </belief>
+        </beliefs>
+        
+
+	<plans>
+		 <!-- Plan default, Este plan intentará hará que el auto llegue desde su posición inicial a la final mediante alguna estrategia (que aún no se implementa) en base a un grafo del ambiente (que aún no se sabe cómo será). -->
+        <plan name="DestinoPlan">
+            <body class="DestinoPlan"/>
+        </plan>
+       	<!--  -->
+       	
+       	
+       	<!-- Planes para modificar propiedades del agente.  -->
+       	<plan name="setIdCar">
+			<body class="SetIdCarPlan"/>
+			<trigger>
+				<messageevent ref="setIdCar"/>
+			</trigger>
+		</plan>
+       	
+       	<plan name="setPosicion">
+			<body class="SetPosicionPlan"/>
+			<trigger>
+				<messageevent ref="setCarPos"/>
+			</trigger>
+		</plan>
+		
+		<plan name="setCarGoal">
+			<body class="SetCarGoalPlan"/>
+			<trigger>
+				<messageevent ref="setCarGoal"/>
+			</trigger>
+		</plan>
+		
+		<plan name="setCarDir">
+			<body class="SetCarDirPlan"/>
+			<trigger>
+				<messageevent ref="setCarDir"/>
+			</trigger>
+		</plan>
+		
+		<plan name="setCarVel">
+			<body class="SetCarVelPlan"/>
+			<trigger>
+				<messageevent ref="setCarVel"/>
+			</trigger>
+		</plan>
+		
+		<plan name="setCarVelMax">
+			<body class="SetCarVelMaxPlan"/>
+			<trigger>
+				<messageevent ref="setCarVelMax"/>
+			</trigger>
+		</plan>
+		
+		<plan name="setCarStatus">
+			<body class="SetCarStatusPlan"/>
+			<trigger>
+				<messageevent ref="setCarStatus"/>
+			</trigger>
+		</plan>
+		
+		
+		<!-- Planes para obtener información del agente.  -->
+		<plan name="getIdCar">
+			<body class="GetIdCarPlan"/>
+			<trigger>
+				<messageevent ref="request_tangente"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getPosicion">
+			<body class="GetPosicionPlan"/>
+			<trigger>
+				<messageevent ref="getCarPos"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getCarGoal">
+			<body class="GetCarGoalPlan"/>
+			<trigger>
+				<messageevent ref="getCarGoal"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getCarDir">
+			<body class="GetCarDirPlan"/>
+			<trigger>
+				<messageevent ref="getCarDir"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getCarVel">
+			<body class="GetCarVelPlan"/>
+			<trigger>
+				<messageevent ref="setCarVel"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getCarVelMax">
+			<body class="GetCarVelMaxPlan"/>
+			<trigger>
+				<messageevent ref="getCarVelMax"/>
+			</trigger>
+		</plan>
+		
+		<plan name="getCarStatus">
+			<body class="GetCarStatusPlan"/>
+			<trigger>
+				<messageevent ref="getCarStatus"/>
+			</trigger>
+		</plan>
+       	
+       	<!-- Planes para obtener información del agente.  -->
+        <plan name="cambiaEstadoNormal">
+            <body class="CambiaEstadoNormalPlan"/>
+            <trigger>
+                <condition>
+                    $beliefbase.segundosTrans>0 &amp;&amp; $beliefbase.segundosTrans%10==0
+                </condition>
+            </trigger>
+        </plan>
+        <!-- Este plan permite conocer el estado del semaforo -->
+		<plan name="peticionEstado">
+			<body class="PeticionEstadoPlan"/>
+			<trigger>
+				<messageevent ref="request_state"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea tangente del semaforo, si hay trafico o no -->
+		<plan name="peticionGetTangente">
+			<body class="PeticionLineaTangentePlan"/>
+			<trigger>
+				<messageevent ref="request_tangente"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea perpendicular del semaforo, si hay trafico o no -->
+		<plan name="peticionGetPerpendicular">
+			<body class="PeticionLineaPerpendicularPlan"/>
+			<trigger>
+				<messageevent ref="request_perpendicular"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetTangente">
+			<body class="SetLineaTangentePlan"/>
+			<trigger>
+				<messageevent ref="set_tangente"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetNorte">
+			<body class="PeticionLineaNortePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_norte"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetNorte">
+			<body class="SetLineaNortePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_norte"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetSur">
+			<body class="PeticionLineaSurPlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_sur"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetSur">
+			<body class="SetLineaSurPlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_sur"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetEste">
+			<body class="PeticionLineaEstePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_este"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetEste">
+			<body class="SetLineaEstePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_este"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
+		<plan name="peticionGetOeste">
+			<body class="PeticionLineaOestePlan"/>
+			<trigger>
+				<messageevent ref="request_trafico_oeste"/>
+			</trigger>
+		</plan>
+		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
+		<plan name="peticionSetOeste">
+			<body class="SetLineaOestePlan"/>
+			<trigger>
+				<messageevent ref="set_trafico_oeste"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetOesteEstado">
+			<body class="PeticionOestePlan"/>
+			<trigger>
+				<messageevent ref="request_oeste"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetEsteEstado">
+			<body class="PeticionEstePlan"/>
+			<trigger>
+				<messageevent ref="request_este"/>
+			</trigger>
+		</plan>
+			<plan name="peticionGetSurEstado">
+			<body class="PeticionSurPlan"/>
+			<trigger>
+				<messageevent ref="request_sur"/>
+			</trigger>
+		</plan>
+		<plan name="peticionGetNorteEstado">
+			<body class="PeticionNortePlan"/>
+			<trigger>
+				<messageevent ref="request_norte"/>
+			</trigger>
+		</plan>
+		<plan name="peticionPosicion">
+			<body class="PeticionPosicionPlan"/>
+			<trigger>
+				<messageevent ref="request_pos"/>
+			</trigger>
+		</plan>
+		<plan name="setPosicion">
+			<body class="SetPosicionPlan"/>
+			<trigger>
+				<messageevent ref="set_pos"/>
+			</trigger>
+		</plan>
+	</plans>
+
+	<events>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="request_state" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request state")</match>
+		</messageevent>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="inform" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+		<!-- Consulta el estado de la linea tangente del agente. -->
+		<messageevent name="request_tangente" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request tangente")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea perpendicular del agente. -->
+		<messageevent name="request_perpendicular" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request perpendicular")</match>
+		</messageevent>
+		<!-- Pone un nuevo valor a la linea tangente del agente. -->
+		<messageevent name="set_tangente" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set tangente")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea norte del agente. -->
+		<messageevent name="request_trafico_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico norte")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea norte del agente. -->
+		<messageevent name="set_trafico_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico norte")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea sur del agente. -->
+		<messageevent name="request_trafico_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico sur")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea sur del agente. -->
+		<messageevent name="set_trafico_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico sur")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea este del agente. -->
+		<messageevent name="request_trafico_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico este")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea este del agente. -->
+		<messageevent name="set_trafico_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico este")</match>
+		</messageevent>
+		<!-- Consulta el estado de la linea oeste del agente. -->
+		<messageevent name="request_trafico_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico oeste")</match>
+		</messageevent>
+		<!-- Pone el estado de la linea oeste del agente. -->
+		<messageevent name="set_trafico_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico oeste")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_oeste" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request oeste")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_este" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request este")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_norte" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request norte")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_sur" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request sur")</match>
+		</messageevent>
+		<!-- Consulta el estado oeste del agente. -->
+		<messageevent name="request_pos" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request posicion")</match>
+		</messageevent>
+		
+		<messageevent name="set_pos" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set posicion")</match>
+		</messageevent>
+	</events>
+
+	<properties>
+		<!-- Only log outputs >= level are printed. -->
+		<!-- <property name="logging.level">Level.INFO</property> -->
+ 		<!-- The default parent handler prints out log messages on the console. -->
+		<property name="logging.useParentHandlers">true</property>
+		<!-- Debugging flag. -->
+		<!-- <property name="debugging">true</property> -->
+    </properties>
+    
+    <configurations>
+		<configuration name="default">
+			<plans>
+				<initialplan ref="contadorPlanNormal"/>
+			</plans>
+		</configuration>
+ 	</configurations>
+
+</agent>
+
