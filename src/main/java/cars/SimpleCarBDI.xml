@@ -93,8 +93,8 @@
 			</trigger>
 		</plan>
        	
-       	<plan name="setPosicion">
-			<body class="SetPosicionPlan"/>
+       	<plan name="setCarPos">
+			<body class="SetCarPosPlan"/>
 			<trigger>
 				<messageevent ref="setCarPos"/>
 			</trigger>
