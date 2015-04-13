@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-	<H3>Auto simple.</H3>
-	Describe al agente del auto más simple.
-	<H4>Explicacion</H4>
-	Este auto es el modelo más simple aún, avanza hasta llegar a su destino.
- -->
-<agent xmlns="http://jadex.sourceforge.net/jadex"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!-- <H3>Auto simple.</H3> Describe al agente del auto más simple. <H4>Explicacion</H4> 
+	Este auto es el modelo más simple aún, avanza hasta llegar a su destino. -->
+<agent xmlns="http://jadex.sourceforge.net/jadex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
 	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
-	name="SimpleCar"
-	package="cars">
+	name="SimpleCar" package="cars">
 
 	<imports>
 		<import>java.util.logging.*</import>
@@ -20,166 +14,169 @@
 
 	<beliefs>
 		<!-- Indica si el auto está detenido o avanzando. -->
-        <belief name="ID_CAR" class="String">
-            <fact>""</fact>
-        </belief>
-	
+		<belief name="ID_CAR" class="String">
+			<fact>""</fact>
+		</belief>
+
 		<!-- Indica si el auto está detenido o avanzando. -->
-        <belief name="isAvanzando" class="boolean">
-            <fact>true</fact>
-        </belief>
-	
+		<belief name="isAvanzando" class="boolean">
+			<fact>true</fact>
+		</belief>
+
 		<!-- posición x inicial. -->
-        <belief name="x_ini" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- posición y inicial. -->
-        <belief name="y_ini" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- posición x final. -->
-        <belief name="x_fin" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- posición y inicial. -->
-        <belief name="y_fin" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- posición x actual del auto. -->
-        <belief name="pox" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- posición y actual. -->
-        <belief name="poy" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- Indica la dirección actual en la que avanza el coche: 0:norte, 1:este, 2:sur, 3:oeste. -->
-        <belief name="direccion" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- Velocidad actual del vehículo. -->
-        <belief name="velocidad" class="int">
-            <fact>0</fact>
-        </belief>
-        
-        <!-- Velocidad máxima permitida dependiento de la calle donde se encuentra. -->
-        <belief name="vel_max" class="int">
-            <fact>0</fact>
-        </belief>
-        </beliefs>
-        
+		<belief name="x_ini" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- posición y inicial. -->
+		<belief name="y_ini" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- posición x final. -->
+		<belief name="x_fin" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- posición y inicial. -->
+		<belief name="y_fin" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- posición x actual del auto. -->
+		<belief name="pox" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- posición y actual. -->
+		<belief name="poy" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- Indica la dirección actual en la que avanza el coche: 0:norte, 1:este, 
+			2:sur, 3:oeste. -->
+		<belief name="direccion" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- Velocidad actual del vehículo. -->
+		<belief name="velocidad" class="int">
+			<fact>0</fact>
+		</belief>
+
+		<!-- Velocidad máxima permitida dependiento de la calle donde se encuentra. -->
+		<belief name="vel_max" class="int">
+			<fact>0</fact>
+		</belief>
+	</beliefs>
+
 	<plans>
-		 <!-- Plan default, Este plan intentará hará que el auto llegue desde su posición inicial a la final mediante alguna estrategia (que aún no se implementa) en base a un grafo del ambiente (que aún no se sabe cómo será). -->
-        <plan name="DestinoPlan">
-            <body class="DestinoPlan"/>
-        </plan>
-       	<!--  -->
-       	
-       	<!-- Planes para modificar propiedades del agente.  -->
-       	<plan name="setIdCar">
-			<body class="SetIdCarPlan"/>
+		<!-- Plan default, Este plan intentará hará que el auto llegue desde su 
+			posición inicial a la final mediante alguna estrategia (que aún no se implementa) 
+			en base a un grafo del ambiente (que aún no se sabe cómo será). -->
+		<plan name="DestinoPlan">
+			<body class="DestinoPlan" />
+		</plan>
+		<!-- -->
+
+		<!-- Planes para modificar propiedades del agente. -->
+		<plan name="setIdCar">
+			<body class="SetIdCarPlan" />
 			<trigger>
-				<messageevent ref="setIdCar"/>
+				<messageevent ref="setIdCar" />
 			</trigger>
 		</plan>
-       	
-       	<plan name="setCarPos">
-			<body class="SetCarPosPlan"/>
+
+		<plan name="setCarPos">
+			<body class="SetCarPosPlan" />
 			<trigger>
-				<messageevent ref="setCarPos"/>
+				<messageevent ref="setCarPos" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="setCarGoal">
-			<body class="SetCarGoalPlan"/>
+			<body class="SetCarGoalPlan" />
 			<trigger>
-				<messageevent ref="setCarGoal"/>
+				<messageevent ref="setCarGoal" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="setCarDir">
-			<body class="SetCarDirPlan"/>
+			<body class="SetCarDirPlan" />
 			<trigger>
-				<messageevent ref="setCarDir"/>
+				<messageevent ref="setCarDir" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="setCarVel">
-			<body class="SetCarVelPlan"/>
+			<body class="SetCarVelPlan" />
 			<trigger>
-				<messageevent ref="setCarVel"/>
+				<messageevent ref="setCarVel" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="setCarVelMax">
-			<body class="SetCarVelMaxPlan"/>
+			<body class="SetCarVelMaxPlan" />
 			<trigger>
-				<messageevent ref="setCarVelMax"/>
+				<messageevent ref="setCarVelMax" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="setCarStatus">
-			<body class="SetCarStatusPlan"/>
+			<body class="SetCarStatusPlan" />
 			<trigger>
-				<messageevent ref="setCarStatus"/>
+				<messageevent ref="setCarStatus" />
 			</trigger>
 		</plan>
-		
-		
-		<!-- Planes para obtener información del agente.  -->
+
+
+		<!-- Planes para obtener información del agente. -->
 		<plan name="getIdCar">
-			<body class="GetIdCarPlan"/>
+			<body class="GetIdCarPlan" />
 			<trigger>
-				<messageevent ref="getIdCar"/>
+				<messageevent ref="getIdCar" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarPos">
-			<body class="GetPosicionPlan"/>
+			<body class="GetPosicionPlan" />
 			<trigger>
-				<messageevent ref="getCarPos"/>
+				<messageevent ref="getCarPos" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarGoal">
-			<body class="GetCarGoalPlan"/>
+			<body class="GetCarGoalPlan" />
 			<trigger>
-				<messageevent ref="getCarGoal"/>
+				<messageevent ref="getCarGoal" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarDir">
-			<body class="GetCarDirPlan"/>
+			<body class="GetCarDirPlan" />
 			<trigger>
-				<messageevent ref="getCarDir"/>
+				<messageevent ref="getCarDir" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarVel">
-			<body class="GetCarVelPlan"/>
+			<body class="GetCarVelPlan" />
 			<trigger>
-				<messageevent ref="setCarVel"/>
+				<messageevent ref="setCarVel" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarVelMax">
-			<body class="GetCarVelMaxPlan"/>
+			<body class="GetCarVelMaxPlan" />
 			<trigger>
-				<messageevent ref="getCarVelMax"/>
+				<messageevent ref="getCarVelMax" />
 			</trigger>
 		</plan>
-		
+
 		<plan name="getCarStatus">
-			<body class="GetCarStatusPlan"/>
+			<body class="GetCarStatusPlan" />
 			<trigger>
-				<messageevent ref="getCarStatus"/>
+				<messageevent ref="getCarStatus" />
 			</trigger>
 		</plan>
 	</plans>
@@ -190,108 +187,128 @@
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setIdCar")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setIdCar")</match>
 		</messageevent>
-		
-		<messageevent name="setCarPosIni" direction="receive" type="fipa">
+
+		<messageevent name="setCarPosIni" direction="receive"
+			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarPosIni")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarPosIni")</match>
 		</messageevent>
-		
+
 		<messageevent name="setCarGoal" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarGoal")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarGoal")</match>
 		</messageevent>
-		
+
 		<messageevent name="setCarDir" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarDir")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarDir")</match>
 		</messageevent>
-		
+
 		<messageevent name="setCarVel" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarVel")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarVel")</match>
 		</messageevent>
-		
-		<messageevent name="setCarVelMax" direction="receive" type="fipa">
+
+		<messageevent name="setCarVelMax" direction="receive"
+			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarVelMax")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarVelMax")</match>
 		</messageevent>
-		
-		<messageevent name="setCarStatus" direction="receive" type="fipa">
+
+		<messageevent name="setCarStatus" direction="receive"
+			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarStatus")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarStatus")</match>
 		</messageevent>
-		
+
 		<messageevent name="setCarPos" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("setCarPos")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("setCarPos")</match>
 		</messageevent>
-		
+
 		<!-- eventos de geters. -->
 		<messageevent name="getIdCar" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getIdCar")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getIdCar")</match>
 		</messageevent>
-		
+
 		<messageevent name="getCarGoal" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarGoal")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarGoal")</match>
 		</messageevent>
-		
+
 		<messageevent name="getCarDir" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarDir")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarDir")</match>
 		</messageevent>
-		
+
 		<messageevent name="getCarVel" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarVel")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarVel")</match>
 		</messageevent>
-		
-		<messageevent name="getCarVelMax" direction="receive" type="fipa">
+
+		<messageevent name="getCarVelMax" direction="receive"
+			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarVelMax")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarVelMax")</match>
 		</messageevent>
-		
-		<messageevent name="getCarStatus" direction="receive" type="fipa">
+
+		<messageevent name="getCarStatus" direction="receive"
+			type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarStatus")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarStatus")</match>
 		</messageevent>
-		
+
 		<messageevent name="getCarPos" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
 				<value>SFipa.REQUEST</value>
 			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("getCarPos")</match>
+			<match>$content instanceof String &amp;&amp;
+				((String)$content).startsWith("getCarPos")</match>
 		</messageevent>
-		
+
 		<!-- evento de respuesta. -->
 		<messageevent name="CarInform" direction="send" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
@@ -304,19 +321,19 @@
 	<properties>
 		<!-- Only log outputs >= level are printed. -->
 		<!-- <property name="logging.level">Level.INFO</property> -->
- 		<!-- The default parent handler prints out log messages on the console. -->
+		<!-- The default parent handler prints out log messages on the console. -->
 		<property name="logging.useParentHandlers">true</property>
 		<!-- Debugging flag. -->
 		<!-- <property name="debugging">true</property> -->
-    </properties>
-    
-    <configurations>
+	</properties>
+
+	<configurations>
 		<configuration name="default">
 			<plans>
-				<initialplan ref="DestinoPlan"/>
+				<initialplan ref="DestinoPlan" />
 			</plans>
 		</configuration>
- 	</configurations>
+	</configurations>
 
 </agent>
 
