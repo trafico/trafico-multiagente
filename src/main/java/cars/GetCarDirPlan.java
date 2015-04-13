@@ -6,7 +6,7 @@ public class GetCarDirPlan extends GetParamPlan {
 	public void body() {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
-			crearMensajeSalida("inform", "direccion", "int");
+			crearMensajeSalida("CarInform", "direccion", "int");
 		}
 	}
 

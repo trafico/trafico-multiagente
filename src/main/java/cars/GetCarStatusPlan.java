@@ -6,7 +6,7 @@ public class GetCarStatusPlan extends GetParamPlan {
 	public void body() {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
-			crearMensajeSalida("inform", "isAvanzando", "boolean");
+			crearMensajeSalida("CarInform", "isAvanzando", "boolean");
 		}
 	}
 

@@ -7,7 +7,7 @@ public class GetPosicionPlan extends GetParamPlan {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
 			String [] params={"pox", "poy"};
-			crearMensajeSalida("inform", params, "int");
+			crearMensajeSalida("CarInform", params, "int");
 		}
 	}
 

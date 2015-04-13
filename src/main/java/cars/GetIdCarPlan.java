@@ -6,7 +6,7 @@ public class GetIdCarPlan extends GetParamPlan {
 	public void body() {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
-			crearMensajeSalida("inform", "ID_CAR", "String");
+			crearMensajeSalida("CarInform", "ID_CAR", "String");
 		}
 	}
 

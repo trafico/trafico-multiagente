@@ -7,7 +7,7 @@ public class GetCarGoalPlan extends GetParamPlan {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
 			String [] params={"x_fin", "y_fin"};
-			crearMensajeSalida("inform", params, "int");
+			crearMensajeSalida("CarInform", params, "int");
 		}
 	}
 

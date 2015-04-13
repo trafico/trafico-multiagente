@@ -6,7 +6,7 @@ public class GetCarVelMaxPlan extends GetParamPlan {
 	public void body() {
 		// TODO Auto-generated method stub
 		if(isCondicion()){
-			crearMensajeSalida("inform", "vel_max", "int");
+			crearMensajeSalida("CarInform", "vel_max", "int");
 		}
 	}
 
