@@ -36,13 +36,26 @@
 		<!-- Sin propiedades, es para crear los obstáculos -->
 		</env:objecttype>
 		
-<env:dataviews>
+		<env:processtypes>
+				<env:processtype name="crearAuto" class="DefaultObjectCreationProcess">
+					<env:property name="timerate">5000</env:property>
+					<env:property name="type">"automovil"</env:property>
+					<env:property name="properties" dynamic="true">
+						jadex.commons.SUtil.createHashMap(
+							new String[]{Space2D.PROPERTY_POSITION},
+							new Object[]{((Space2D)$space).getRandomPosition(Vector2Int.ZERO)})
+					</env:property>
+				</env:processtype>
+			</env:processtypes>
+		
+		
+		<env:dataviews>
 				<env:dataview name="view_all" class="GeneralDataView2D" />
-				
-</env:dataviews>
-			
-
-<env:perspectives>
+						
+		</env:dataviews>
+					
+		
+		<env:perspectives>
 				<env:perspective name="icons" class="Perspective2D" >	
 						<env:drawable objecttype="cuadra" width="1" height="1">
 								<env:texturedrectangle layer="1" height="8" width="8" imagepath="src/main/java/environment/imagenes/cuadra.png"/>
@@ -58,7 +71,7 @@
 								<env:gridlayer width="1.0" height="1.0" color="black" />
 						</env:prelayers>
 				</env:perspective>
-</env:perspectives>
+		</env:perspectives>
 <!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
 			<env:spaceexecutor class="RoundBasedExecutor">
 				<env:property name="space">$space</env:property>
@@ -133,9 +146,16 @@
 							
 						</env:object>
 					</env:objects>
+					
+					<env:processes>
+						<env:process type="crearAuto">
+						</env:process>
+					</env:processes>
+					
 					<env:observers>
 						<env:observer name="world" dataview="view_all" perspective="icons"/>
 					</env:observers>
+					
 				</env:envspace>
 			</extensions>
 		</configuration>
