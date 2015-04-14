@@ -1,11 +1,30 @@
 package environment;
 
+import java.util.ArrayList;
+
 public class posDisponible {
-
-List<int[]> coord=new ArrayList<int[]>();
-
-coord.add(new int[1,1]);
 	
-System.out.println (coord.get(0));
-	
+	static ArrayList<Integer>[] coord = new ArrayList[3];
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		coord[0] = new ArrayList<Integer>();
+		coord[1] = new ArrayList<Integer>();
+		llenarLista();
+		
+		
+
+	}
+
+	public static void llenarLista() {
+		// TODO Auto-generated method stub
+		
+		coord[0].add(123);coord[1].add(163);
+		coord[0].add(23);coord[1].add(23789);
+		
+				
+		
+	}
+
 }
