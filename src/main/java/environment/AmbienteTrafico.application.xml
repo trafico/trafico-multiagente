@@ -48,7 +48,7 @@
 								<env:texturedrectangle layer="1" height="8" width="8" imagepath="src/main/java/environment/imagenes/cuadra.png"/>
 						</env:drawable>	
 						<env:drawable objecttype="automovil" width="1" height="1" >
-								<env:texturedrectangle layer="2" height="1" width="1" imagepath="src/main/java/environment/imagenes/carrito.png"/>
+								<env:texturedrectangle layer="2" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito.png"/>
 						</env:drawable>
 						<env:drawable objecttype="semaforo" width="1" height="1" >
 								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png"/>
