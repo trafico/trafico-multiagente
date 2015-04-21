@@ -8,46 +8,27 @@ import jadex.commons.future.ITerminableFuture;
 import jadex.commons.future.TerminableFuture;
 
 @Service
-public class EstadoSemaforoService implements IEstadoSemaforoService {
-	
+public class PosicionAutoService implements IPosicionAutoService {
 	@ServiceComponent
 	protected IBDIInternalAccess agent; //Representa al agente
 
-	/**
-	 * @author josue
-	 * @return Future, con una posicion
-	 */
-	public ITerminableFuture<PosicionSemaforo> getPosicion() {
-		
-		//System.out.println("Hola chavo");
+	public ITerminableFuture<PosicionAuto> getPosicionAuto() {
 		
 		//Accedo a la base de creencias y despues convierto a valores numericos
 		IBelief creenciaPosX = agent.getBeliefbase().getBelief("posX"); 
 		IBelief creenciaPosY = agent.getBeliefbase().getBelief("posY");
 		
-		IBelief lineaActualCreencia = agent.getBeliefbase().getBelief("lineaActual");
-		
-		
 		int posX = (Integer) creenciaPosX.getFact();
 		int posY = (Integer) creenciaPosY.getFact();
-		int lineaActual = (Integer) lineaActualCreencia.getFact();
-		String estado="";
 		
-		switch (lineaActual)  {
-			case 1: estado = "norte"; break;
-			case 2: estado = "sur"; break;
-			case 3: estado = "este"; break;
-			case 4: estado = "oeste"; break;
-		}
-		
-		
-		PosicionSemaforo miPosicion = new PosicionSemaforo(posX,posY,estado);
+		PosicionAuto miPosicion = new PosicionAuto(posX,posY);
 		System.out.println("Posicion a enviar:"+miPosicion);
 		
-		TerminableFuture<PosicionSemaforo> ret =  new TerminableFuture<PosicionSemaforo>();
+		TerminableFuture<PosicionAuto> ret =  new TerminableFuture<PosicionAuto>();
 		ret.setResult(miPosicion);
 		return ret;
 		
 	}
-
+	
+	
 }

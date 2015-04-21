@@ -83,6 +83,27 @@
         <belief name="posY" class="int">
             <fact>0</fact>
         </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="traficoNorte" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="traficoSur" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="traficoEste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="traficoOeste" class="int">
+            <fact>0</fact>
+        </belief>
+        
 	</beliefs>
 
 	<plans>
@@ -361,6 +382,12 @@
 		<providedservice class="IEstadoSemaforoService">
 			<implementation class="EstadoSemaforoService"/>
 		</providedservice>
+		<providedservice class="ITraficoSemaforoService">
+			<implementation class="TraficoEstadoSemaforo"/>
+		</providedservice>
+		<requiredservice name="posicionAutos" class="IPosicionAutoService" multiple="true" >
+    		<binding scope="platform" dynamic="true"/>
+    	</requiredservice>
 	</services>
 
 	<properties>

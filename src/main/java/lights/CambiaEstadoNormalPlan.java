@@ -25,6 +25,7 @@ public class CambiaEstadoNormalPlan extends Plan {
 			cnt = 1;
 		else
 			cnt = 0;
+		
 		 getBeliefbase().getBelief("estadoSemaforo").setFact(new Integer(cnt));
 		 getBeliefbase().getBelief("lineaActual").setFact(new Integer(actual));
 		    System.out.println("Estado semaforo: "+actual);

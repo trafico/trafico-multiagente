@@ -84,7 +84,7 @@
 	<plans>
 		 <!-- Plan default, aumenta el contador del semaforo. -->
         <plan name="contadorPlanNormal">
-            <body class="SemaforoSimpleContadorPlan"/>
+            <body class="AutoSimpleContadorPlan"/>
         </plan>
        	<!-- Este plan cambia el estado del semaforo segun el numero de segundos transcurridos
          sin trafico ni comunicacion, cambia cada 10 segundos -->
@@ -363,6 +363,9 @@
     </properties>
     
     <services>
+    	<providedservice class="IPosicionAutoService">
+			<implementation class="PosicionAutoService"/>
+		</providedservice>
     	<requiredservice name="estadosDeSemaforos" class="IEstadoSemaforoService" multiple="true" >
     		<binding scope="platform" dynamic="true"/>
     	</requiredservice>

@@ -11,11 +11,21 @@ public class PosicionSemaforo {
 	
 	int posX;
 	int posY;
+	String estadoActual;
 	
-	public PosicionSemaforo(int posX2, int posY2) {
+	public PosicionSemaforo(int posX2, int posY2, String estado) {
 		super();
 		this.posX = posX2;
 		this.posY = posY2;
+		this.estadoActual = estado;
+	}
+
+	public String getEstadoActual() {
+		return estadoActual;
+	}
+
+	public void setEstadoActual(String estadoActual) {
+		this.estadoActual = estadoActual;
 	}
 
 	public int getPosX() {
@@ -36,7 +46,8 @@ public class PosicionSemaforo {
 
 	@Override
 	public String toString() {
-		return "PosicionSemaforo [posX=" + posX + ", posY=" + posY + "]";
+		return "PosicionSemaforo [posX=" + posX + ", posY=" + posY
+				+ ", estadoActual=" + estadoActual + "]";
 	}
 
 	
