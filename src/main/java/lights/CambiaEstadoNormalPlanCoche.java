@@ -29,23 +29,11 @@ public class CambiaEstadoNormalPlanCoche extends Plan {
 		else
 			actual = actual + 1;
 		
-		if (cnt == 0)
-			cnt = 1;
-		else
-			cnt = 0;
 		 getBeliefbase().getBelief("estadoSemaforo").setFact(new Integer(cnt));
 		 getBeliefbase().getBelief("lineaActual").setFact(new Integer(actual));
-		 System.out.println("Estado Coche: "+actual);
-		 System.out.println("Yea: ");//+ semaforos);
-		 
-		 //Collection semaforos = (Collection)getServiceContainer().getRequiredServices("estadosDeSemaforos").get(this);
+		 System.out.println("Pido a los semaforos su servicio: "+actual);
 		 
 		 IFuture<Collection<IEstadoSemaforoService>> servicioSemaforos = getServiceContainer().getRequiredServices("estadosDeSemaforos");
-		 if(servicioSemaforos == null){
-			 System.out.println("Nulo");
-		 }
-		 else
-			 System.out.println("No nulo y quien sabe que pasa");
 		 servicioSemaforos.addResultListener(new DefaultResultListener<Collection<IEstadoSemaforoService>>(){
 			
 

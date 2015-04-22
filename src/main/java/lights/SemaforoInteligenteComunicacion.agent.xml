@@ -12,7 +12,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
 	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
-	name="SemaforoInteligenteNoComunicacion"
+	name="SemaforoInteligenteComunicacion"
 	package="lights">
 
 	<imports>
@@ -118,6 +118,15 @@
             <trigger>
                 <condition>
                     $beliefbase.segundosTrans>0 &amp;&amp; $beliefbase.segundosTrans%10==0
+                </condition>
+            </trigger>
+        </plan>
+        <!-- Este plan permite a los semaforos comunicar su estado de trafico -->
+        <plan name="comunicacionVecinos">
+            <body class="ComunicacionVecinosPlan"/>
+            <trigger>
+                <condition>
+                    $beliefbase.traficoLineaNorte>0 || $beliefbase.traficoLineaSur>0 || $beliefbase.traficoLineaEste>0 || $beliefbase.traficoLineaOeste>0
                 </condition>
             </trigger>
         </plan>
@@ -388,7 +397,9 @@
 		<requiredservice name="posicionAutos" class="IPosicionAutoService" multiple="true" >
     		<binding scope="platform" dynamic="true"/>
     	</requiredservice>
-    
+    		<requiredservice name="servicioTrafico" class="ITraficoSemaforoService" multiple="true" >
+    		<binding scope="platform" dynamic="true"/>
+    	</requiredservice>
 	</services>
 
 	<properties>

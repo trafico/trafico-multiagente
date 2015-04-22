@@ -126,7 +126,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			//System.out.println("Segundos transcurridos:"+(cnt+1));
+			System.out.println("Segundos transcurridos:"+(cnt+1));
 
 			//Actualizar el trafico en base a la posicion de cada automobil
 			/*try{
