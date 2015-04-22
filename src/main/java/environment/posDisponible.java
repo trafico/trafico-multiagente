@@ -43,7 +43,7 @@ public class posDisponible
 		
 		for (int i=0;i<coord[0].size();i++){
 			pos[i]= Vector2Double.getVector2(coord[0].get(i),coord[1].get(i));
-			System.out.println(pos[i]);
+			//System.out.println(pos[i]);
 		}
 		
 	}
