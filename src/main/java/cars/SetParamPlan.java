@@ -8,6 +8,7 @@ public abstract class SetParamPlan extends Plan {
 	protected String[] mensaje;
 	protected int nParam;
 	protected IMessageEvent me;
+	protected EstadoAuto ea= (EstadoAuto)getBeliefbase().getBelief("estadoAuto").getFact();
 
 	public SetParamPlan() {
 		// Initialization code.

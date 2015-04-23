@@ -17,6 +17,10 @@
 		<belief name="ID_CAR" class="String">
 			<fact>""</fact>
 		</belief>
+		
+		<belief name="estadoAuto" class="EstadoAuto">
+			<fact>null</fact>
+		</belief>
 
 		<!-- Indica si el auto está detenido o avanzando. -->
 		<belief name="isAvanzando" class="boolean">
