@@ -62,8 +62,7 @@
 				<env:property name="timerate">5000</env:property>
 				<env:property name="type">"objetivo"</env:property>
 				<env:property name="properties" dynamic="true">
-						
-					    posDisponible.obtenerPosicion()
+						posDisponible.obtenerPosicion()   
 				</env:property>
 			</env:processtype>
 		</env:processtypes> 
@@ -1973,7 +1972,7 @@
 					 <env:processes>
 						<env:process type="crearObjetivo">
 						</env:process>
-					</env:processes> 
+					</env:processes>  
 					
 					<env:observers>
 						<env:observer name="world" dataview="view_all" perspective="icons"/>
@@ -1983,7 +1982,6 @@
 			</extensions>
 			
 			<!-- <components>
-				<component type="Environment"/>
 				<component type="automovil" number="5"/>
 				<component type="semaforo" number="10" />
 			</components> -->
