@@ -21,7 +21,7 @@
 <extensiontypes>
 
 <!-- Declaration of a grid environment as space type. -->
-<env:envspacetype name="tm2dspace" width="100" height="100" class="Grid2D">
+<env:envspacetype name="tm2dspace" width="90" height="90" class="Grid2D">
 
 
 		<!-- Declaracion de objetos que estarán en el ambiente -->
@@ -62,6 +62,7 @@
 				<env:property name="timerate">5000</env:property>
 				<env:property name="type">"objetivo"</env:property>
 				<env:property name="properties" dynamic="true">
+						
 					    posDisponible.obtenerPosicion()
 				</env:property>
 			</env:processtype>
@@ -141,7 +142,7 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 6)</env:property>
 						</env:object>
-							<env:object type="cuadra">
+						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(16, 6)</env:property>
 						</env:object>
 						<env:object type="cuadra">
@@ -165,9 +166,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 6)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!--<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 6)</env:property>
-						</env:object>
+						</env:object> -->
 							<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 16)</env:property>
 						</env:object>
@@ -195,9 +196,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 16)</env:property>
 						</env:object>
-							<env:object type="cuadra">
+						<!--<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 16)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 26)</env:property>
 						</env:object>
@@ -225,9 +226,9 @@
 							<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 26)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 26)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 36)</env:property>
 						</env:object>
@@ -255,9 +256,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 36)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 36)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 46)</env:property>
 						</env:object>
@@ -285,9 +286,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 46)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 46)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 56)</env:property>
 						</env:object>
@@ -315,9 +316,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 56)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 56)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 66)</env:property>
 						</env:object>
@@ -345,9 +346,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 66)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 66)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 76)</env:property>
 						</env:object>
@@ -375,9 +376,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 76)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 76)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 86)</env:property>
 						</env:object>
@@ -405,9 +406,9 @@
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(86, 86)</env:property>
 						</env:object>
-						<env:object type="cuadra">
+						<!-- <env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 86)</env:property>
-						</env:object>
+						</env:object> 
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(6, 96)</env:property>
 						</env:object>
@@ -437,7 +438,7 @@
 						</env:object>
 						<env:object type="cuadra">
 							<env:property name="position">new Vector2Double(96, 96)</env:property>
-						</env:object>
+						</env:object>-->
 							
 						
 						
@@ -480,9 +481,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 1)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 1)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 11)</env:property>	
 						</env:object>
@@ -510,9 +511,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 11)</env:property>	
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 11)</env:property>	
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 21)</env:property>
 						</env:object>
@@ -540,9 +541,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 21)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 21)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 31)</env:property>
 						</env:object>
@@ -570,9 +571,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 31)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 31)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 41)</env:property>
 						</env:object>
@@ -600,9 +601,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 41)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 41)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 51)</env:property>
 						</env:object>
@@ -630,9 +631,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 51)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 51)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 61)</env:property>
 						</env:object>
@@ -660,9 +661,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 61)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 61)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 71)</env:property>
 						</env:object>
@@ -690,9 +691,9 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 71)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 71)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 81)</env:property>
 						</env:object>
@@ -720,7 +721,7 @@
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(81, 81)</env:property>
 						</env:object>
-						<env:object type="semaforo" >
+						<!-- <env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 81)</env:property>
 						</env:object>
 						<env:object type="semaforo" >
@@ -752,7 +753,7 @@
 						</env:object>
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(91, 91)</env:property>
-						</env:object>
+						</env:object> -->
 						
 						
 						<env:object type="calleHE" >
@@ -782,9 +783,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 1.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 1.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 11.5)</env:property>
 						</env:object>
@@ -812,9 +813,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 11.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 11.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 21.5)</env:property>
 						</env:object>
@@ -842,9 +843,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 21.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 21.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 31.5)</env:property>
 						</env:object>
@@ -872,9 +873,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 31.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 31.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 41.5)</env:property>
 						</env:object>
@@ -902,9 +903,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 41.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 41.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 51.5)</env:property>
 						</env:object>
@@ -932,9 +933,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 51.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 51.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 61.5)</env:property>
 						</env:object>
@@ -962,9 +963,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 61.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 61.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 71.5)</env:property>
 						</env:object>
@@ -992,9 +993,9 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 71.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 71.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(6, 81.5)</env:property>
 						</env:object>
@@ -1022,7 +1023,7 @@
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(86, 81.5)</env:property>
 						</env:object>
-						<env:object type="calleHE" >
+						<!-- <env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 81.5)</env:property>
 						</env:object>
 						<env:object type="calleHE" >
@@ -1054,7 +1055,7 @@
 						</env:object>
 						<env:object type="calleHE" >
 							<env:property name="position">new Vector2Double(96, 91.5)</env:property>
-						</env:object>
+						</env:object> -->
 						
 						
 						
@@ -1085,9 +1086,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 0.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 0.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 10.5)</env:property>
 						</env:object>
@@ -1115,9 +1116,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 10.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 10.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 20.5)</env:property>
 						</env:object>
@@ -1145,9 +1146,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 20.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 20.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 30.5)</env:property>
 						</env:object>
@@ -1175,9 +1176,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 30.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 30.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 40.5)</env:property>
 						</env:object>
@@ -1205,9 +1206,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 40.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 40.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 50.5)</env:property>
 						</env:object>
@@ -1235,9 +1236,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 50.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 50.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 60.5)</env:property>
 						</env:object>
@@ -1265,9 +1266,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 60.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 60.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 70.5)</env:property>
 						</env:object>
@@ -1295,9 +1296,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 70.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 70.5)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 80.5)</env:property>
 						</env:object>
@@ -1325,9 +1326,9 @@
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(86, 80.5)</env:property>
 						</env:object>
-						<env:object type="calleHO" >
+						<!-- <env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 80.5)</env:property>
-						</env:object>
+						</env:object> 
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(6, 90.5)</env:property>
 						</env:object>
@@ -1357,7 +1358,7 @@
 						</env:object>
 						<env:object type="calleHO" >
 							<env:property name="position">new Vector2Double(96, 90.5)</env:property>
-						</env:object>
+						</env:object>-->
 						
 						
 						
@@ -1388,9 +1389,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 6)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 6)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 16)</env:property>
 						</env:object>
@@ -1418,9 +1419,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 16)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 16)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 26)</env:property>
 						</env:object>
@@ -1448,9 +1449,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 26)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 26)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 36)</env:property>
 						</env:object>
@@ -1478,9 +1479,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 36)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 36)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 46)</env:property>
 						</env:object>
@@ -1508,9 +1509,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 46)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 46)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 56)</env:property>
 						</env:object>
@@ -1538,9 +1539,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 56)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 56)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 66)</env:property>
 						</env:object>
@@ -1568,9 +1569,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 66)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 66)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 76)</env:property>
 						</env:object>
@@ -1598,9 +1599,9 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 76)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 76)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(1.5, 86)</env:property>
 						</env:object>
@@ -1628,7 +1629,7 @@
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(81.5, 86)</env:property>
 						</env:object>
-						<env:object type="calleVN" >
+						<!-- <env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 86)</env:property>
 						</env:object>
 						<env:object type="calleVN" >
@@ -1660,7 +1661,7 @@
 						</env:object>
 						<env:object type="calleVN" >
 							<env:property name="position">new Vector2Double(91.5, 96)</env:property>
-						</env:object>						
+						</env:object> -->						
 										
 										
 										
@@ -1693,9 +1694,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 6)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 6)</env:property>
-						</env:object>
+						</env:object> -->
 						 <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 16)</env:property>
 						</env:object>
@@ -1723,9 +1724,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 16)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 16)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 26)</env:property>
 						</env:object>
@@ -1753,9 +1754,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 26)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 26)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 36)</env:property>
 						</env:object>
@@ -1783,9 +1784,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 36)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 36)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 46)</env:property>
 						</env:object>
@@ -1813,9 +1814,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 46)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 46)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 56)</env:property>
 						</env:object>
@@ -1843,9 +1844,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 56)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 56)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 66)</env:property>
 						</env:object>
@@ -1873,9 +1874,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 66)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 66)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 76)</env:property>
 						</env:object>
@@ -1903,9 +1904,9 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 76)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 76)</env:property>
-						</env:object>
+						</env:object> -->
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(0.5, 86)</env:property>
 						</env:object>
@@ -1933,7 +1934,7 @@
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(80.5, 86)</env:property>
 						</env:object>
-						<env:object type="calleVS" >
+						<!-- <env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 86)</env:property>
 						</env:object>
 						<env:object type="calleVS" >
@@ -1965,7 +1966,7 @@
 						</env:object>
 						<env:object type="calleVS" >
 							<env:property name="position">new Vector2Double(90.5, 96)</env:property>
-						</env:object> 
+						</env:object>  -->
 										
 					</env:objects> 
 					
