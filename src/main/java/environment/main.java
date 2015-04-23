@@ -17,4 +17,5 @@ public class main {
 		}
 		
 	}
+	//pruebas de grafo inicial.
 }

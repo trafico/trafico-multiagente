@@ -13,7 +13,7 @@ public class GrafoCalles {
 		grafo= new int[numInt][numInt];
 		armarGrafo();
 	}
-	
+	//Hacemos al grafo o mapa inicial para los coches
 	public int [][] getGrafo(){
 		return grafo;
 	}
