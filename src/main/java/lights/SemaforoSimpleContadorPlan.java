@@ -12,6 +12,9 @@ import jadex.bdi.runtime.Plan;
 import jadex.commons.future.DefaultResultListener;
 import jadex.commons.future.IFuture;
 import jadex.commons.future.ITerminableFuture;
+import jadex.extension.envsupport.environment.ISpaceObject;
+import jadex.extension.envsupport.environment.space2d.Space2D;
+import jadex.extension.envsupport.math.IVector2;
 
 /**
  * Este plan aumenta el contador de segundos de cada semarofo, es el 
@@ -42,6 +45,20 @@ public class SemaforoSimpleContadorPlan extends Plan {
 	}
 
 	public void body() {
+		
+		/*
+		 * COdigo para agregar con el ambiente
+		Space2D	space	= (Space2D)getBeliefbase().getBelief("environment").getFact();
+		ISpaceObject	myself	= (ISpaceObject)getBeliefbase().getBelief("myself").getFact();
+		IVector2	mypos	= (IVector2)myself.getProperty(Space2D.PROPERTY_POSITION);
+		int posX =  = ((Integer)getBeliefbase().getBelief("posX").getFact()).intValue();
+		int posY =  = ((Integer)getBeliefbase().getBelief("posY").getFact()).intValue();
+		getBeliefbase().getBelief("posX").setFact(new Integer(mypos.getXAsInteger()));
+		getBeliefbase().getBelief("posY").setFact(new Integer(mypos.getYAsInteger()));
+		
+		*/
+		
+		
 		while(true) {
 			int cnt = ((Integer)getBeliefbase().getBelief("segundosTrans").getFact()).intValue();
 			if (cnt == 10) {

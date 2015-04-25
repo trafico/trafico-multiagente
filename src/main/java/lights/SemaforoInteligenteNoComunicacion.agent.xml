@@ -22,6 +22,16 @@
 	</imports>
 
 	<beliefs>
+		<!-- Myself belief imported from move capability. -->
+		<beliefref name="myself">
+			<concrete ref="move.myself"/>
+		</beliefref>
+		
+		<!-- Environment imported inherited from move capability. -->
+		<beliefref name="environment">
+			<concrete ref="move.environment"/>
+		</beliefref>
+	
 		<!-- Esta creencia determina el numero de segundos que han transcurrido. -->
         <belief name="segundosTrans" class="int">
             <fact>0</fact>
