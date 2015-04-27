@@ -56,7 +56,11 @@
 		<env:objecttype name="cuadra">
 		<!-- Sin propiedades, es para crear los obstáculos -->
 		</env:objecttype>
-		
+		<env:tasktypes>
+				<env:tasktype name="move" class="MoveTask" />
+				
+		</env:tasktypes>	
+			
 	    <env:processtypes>
 			<env:processtype name="crearObjetivo" class="DefaultObjectCreationProcess">
 				<env:property name="timerate">5000</env:property>
