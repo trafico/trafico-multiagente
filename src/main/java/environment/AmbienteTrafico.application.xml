@@ -110,7 +110,18 @@
 								<env:texturedrectangle layer="1" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito.png"/>
 						</env:drawable>
 						<env:drawable objecttype="semaforo" width="1" height="1" >
-								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png"/>
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde1.png">
+								    <env:drawcondition>$object.estadoSemaforo==0</env:drawcondition> 
+								  </env:texturedrectangle>
+								   <env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png">
+								   <!--   <env:drawcondition>$object.estadoSemaforo==1</env:drawcondition>
+								  </env:texturedrectangle>
+								 <env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde3.png">
+								<env:drawcondition>$object.estadoSemaforo==2</env:drawcondition>
+								  </env:texturedrectangle>
+								  <env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde4.png">
+								   <env:drawcondition>$object.estadoSemaforo==3</env:drawcondition>-->
+								  </env:texturedrectangle>
 						</env:drawable>
 						<env:drawable objecttype="objetivo" width="1" height="1" >
 								<env:texturedrectangle layer="2" height="1.2" width="1.2" imagepath="src/main/java/environment/imagenes/objetivo.png"/>
@@ -133,7 +144,7 @@
 
 	<componenttypes>
 		<componenttype name="automovil" filename="src/main/java/cars/SimpleCarBDI.agent.xml"/>
-		<componenttype name="semaforo" filename="src/main/java/lights/SemaforoSimple.agent.xml"/>
+		<componenttype name="semaforo" filename="src/main/java/lights/SemaforoInteligenteNoComunicacion.agent.xml"/>
 	</componenttypes>
 
 <configurations>
@@ -1984,8 +1995,10 @@
 					
 				</env:envspace>
 			</extensions>
-			
-			<!-- <components>
+			<!-- 	<components>
+				<component type="semaforo"/>
+			</components>
+			<components>
 				<component type="automovil" number="5"/>
 				<component type="semaforo" number="10" />
 			</components> -->
