@@ -79,6 +79,10 @@
         <belief name="posY" class="int">
             <fact>0</fact>
         </belief>
+         <!-- Esta creencia determina posicion en y. -->
+        <belief name="direccion" class="String">
+            <fact>0</fact>
+        </belief>
         
         <!-- Esta creencia ayuda a encontrar el tiempo  -->
         <belief name="tiempoDestino" class="int">
@@ -135,86 +139,7 @@
 				<messageevent ref="set_tangente"/>
 			</trigger>
 		</plan>
-		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
-		<plan name="peticionGetNorte">
-			<body class="PeticionLineaNortePlan"/>
-			<trigger>
-				<messageevent ref="request_trafico_norte"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
-		<plan name="peticionSetNorte">
-			<body class="SetLineaNortePlan"/>
-			<trigger>
-				<messageevent ref="set_trafico_norte"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
-		<plan name="peticionGetSur">
-			<body class="PeticionLineaSurPlan"/>
-			<trigger>
-				<messageevent ref="request_trafico_sur"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
-		<plan name="peticionSetSur">
-			<body class="SetLineaSurPlan"/>
-			<trigger>
-				<messageevent ref="set_trafico_sur"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
-		<plan name="peticionGetEste">
-			<body class="PeticionLineaEstePlan"/>
-			<trigger>
-				<messageevent ref="request_trafico_este"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
-		<plan name="peticionSetEste">
-			<body class="SetLineaEstePlan"/>
-			<trigger>
-				<messageevent ref="set_trafico_este"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite conocer el estado de la linea norte del semaforo, si hay trafico o no -->
-		<plan name="peticionGetOeste">
-			<body class="PeticionLineaOestePlan"/>
-			<trigger>
-				<messageevent ref="request_trafico_oeste"/>
-			</trigger>
-		</plan>
-		<!-- Este plan permite escribir el estado de la linea tangente del semaforo. -->
-		<plan name="peticionSetOeste">
-			<body class="SetLineaOestePlan"/>
-			<trigger>
-				<messageevent ref="set_trafico_oeste"/>
-			</trigger>
-		</plan>
-		<plan name="peticionGetOesteEstado">
-			<body class="PeticionOestePlan"/>
-			<trigger>
-				<messageevent ref="request_oeste"/>
-			</trigger>
-		</plan>
-		<plan name="peticionGetEsteEstado">
-			<body class="PeticionEstePlan"/>
-			<trigger>
-				<messageevent ref="request_este"/>
-			</trigger>
-		</plan>
-			<plan name="peticionGetSurEstado">
-			<body class="PeticionSurPlan"/>
-			<trigger>
-				<messageevent ref="request_sur"/>
-			</trigger>
-		</plan>
-		<plan name="peticionGetNorteEstado">
-			<body class="PeticionNortePlan"/>
-			<trigger>
-				<messageevent ref="request_norte"/>
-			</trigger>
-		</plan>
+
 		<plan name="peticionPosicion">
 			<body class="PeticionPosicionPlan"/>
 			<trigger>
@@ -264,90 +189,9 @@
 			</parameter>
 			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set tangente")</match>
 		</messageevent>
-		<!-- Consulta el estado de la linea norte del agente. -->
-		<messageevent name="request_trafico_norte" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico norte")</match>
-		</messageevent>
-		<!-- Pone el estado de la linea norte del agente. -->
-		<messageevent name="set_trafico_norte" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico norte")</match>
-		</messageevent>
-		<!-- Consulta el estado de la linea sur del agente. -->
-		<messageevent name="request_trafico_sur" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico sur")</match>
-		</messageevent>
-		<!-- Pone el estado de la linea sur del agente. -->
-		<messageevent name="set_trafico_sur" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico sur")</match>
-		</messageevent>
-		<!-- Consulta el estado de la linea este del agente. -->
-		<messageevent name="request_trafico_este" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico este")</match>
-		</messageevent>
-		<!-- Pone el estado de la linea este del agente. -->
-		<messageevent name="set_trafico_este" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico este")</match>
-		</messageevent>
-		<!-- Consulta el estado de la linea oeste del agente. -->
-		<messageevent name="request_trafico_oeste" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request_trafico oeste")</match>
-		</messageevent>
-		<!-- Pone el estado de la linea oeste del agente. -->
-		<messageevent name="set_trafico_oeste" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("set_trafico oeste")</match>
-		</messageevent>
-		<!-- Consulta el estado oeste del agente. -->
-		<messageevent name="request_oeste" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request oeste")</match>
-		</messageevent>
-		<!-- Consulta el estado oeste del agente. -->
-		<messageevent name="request_este" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request este")</match>
-		</messageevent>
-		<!-- Consulta el estado oeste del agente. -->
-		<messageevent name="request_norte" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request norte")</match>
-		</messageevent>
-		<!-- Consulta el estado oeste del agente. -->
-		<messageevent name="request_sur" direction="receive" type="fipa">
-			<parameter name="performative" class="String" direction="fixed">
-				<value>SFipa.REQUEST</value>
-			</parameter>
-			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request sur")</match>
-		</messageevent>
+	
+	
+	
 		<!-- Consulta el estado oeste del agente. -->
 		<messageevent name="request_pos" direction="receive" type="fipa">
 			<parameter name="performative" class="String" direction="fixed">
@@ -376,6 +220,9 @@
     <services>
     	<providedservice class="IPosicionAutoService">
 			<implementation class="PosicionAutoService"/>
+		</providedservice>
+		<providedservice class="ISetPosicionAutos">
+			<implementation class="SetPosicionAutosService"/>
 		</providedservice>
     	<requiredservice name="estadosDeSemaforos" class="IEstadoSemaforoService" multiple="true" >
     		<binding scope="platform" dynamic="true"/>

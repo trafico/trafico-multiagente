@@ -1,10 +1,14 @@
 package lights;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jadex.base.Starter;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
 import jadex.bridge.service.RequiredServiceInfo;
 import jadex.bridge.service.search.SServiceProvider;
+import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.cms.IComponentManagementService;
 import jadex.commons.future.IFuture;
 import jadex.commons.future.ThreadSuspendable;
@@ -38,7 +42,7 @@ public class Experimento {
 				IComponentManagementService.class, RequiredServiceInfo.SCOPE_PLATFORM).get(sus);
 
 		//Inicializo el mapa en ceros
-		int [][] mapa = new int[50][50];
+		int [][] mapa = new int[10][10];
 		int vision = 5; //Vision de los semaforos, en realidad es 10
 		int poner = 1; //Debo poner semaforos
 		int con_col = 0; //Cuenta el numero de columnas que he avanzado para poner semaforos
@@ -47,9 +51,13 @@ public class Experimento {
 		int conB_col = 0; //Cuantas columnas he avanzado para poner columnas
 		int conB_ren = vision -2; //Cuantos renlgones he avanzado
 		
+		System.out.println("HOlaNo");
+		int conta= 0;
+		
 		//Lleno de ceros
-		for(int i=0; i<50;i++){
-			for(int j=0; j<50; j++) {
+		for(int i=0; i<10;i++){
+			
+			for(int j=0; j<10; j++) {
 				
 				//Poner las barreras
 				if(ponerB == 1 && (conB_col > 1)  ) {
@@ -76,9 +84,17 @@ public class Experimento {
 				if(con_col == vision)
 					con_col =0;
 				
-				if(con_col == 0 && poner == 1){
+				//Poner los semaforos
+				if(con_col == 0 && poner == 1){ 
 					mapa[i][j]=1;
 					con_col = con_col + 1;
+					IComponentIdentifier	cid	= cms.createComponent(null,"lights/SemaforoInteligenteNoComunicacion.agent.xml", null, null).get(sus);
+					ISetPosicionSemaforos chat = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionSemaforos.class).get(sus); //Lama al servicio
+					chat.setPosicionSemaforo(i, j);
+					
+					conta = conta +1;
+					//System.out.println(conta);
+					
 				}
 				else {
 					con_col = con_col + 1;
@@ -102,10 +118,17 @@ public class Experimento {
 				conB_ren = vision -2;
 				//mapa[i][0]=2;
 			}
+			//System.out.println(i);
 		}
 		
+		System.out.println("HOlaYes");
 		
-		
+		/*
+		 * Posicionamiento de coches
+		 */
+		IComponentIdentifier	cid	= cms.createComponent(null,"lights/CocheSimple.agent.xml", null, null).get(sus);
+		ISetPosicionAutos chat = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionAutos.class).get(sus); //Lama al servicio
+		chat.setPosicionAuto(0, 20,"norte");
 		
 		/*for(int i=0; i<50;i++){
 			for(int j=0; j<50; j++) {
@@ -117,8 +140,19 @@ public class Experimento {
 			//System.out.println(mapa[i][1]);;
 		
 		// Start the chat component
-		IComponentIdentifier	cid	= cms.createComponent(null,"lights/SemaforoInteligenteNoComunicacion.agent.xml", null, null).get(sus);
-		//System.out.println("Started chat component: "+cid);
+		//Map<String, Object> agentArgs = new HashMap<String, Object>();
+	    //agentArgs.put("value", 42);
+		//CreationInfo cInfo = new CreationInfo(agentArgs);
+		//IComponentIdentifier	cid	= cms.createComponent(null,"lights/SemaforoInteligenteNoComunicacion.agent.xml", cInfo, null).get(sus);
+		//IComponentIdentifier	cid	= cms.createComponent(null,"lights/SemaforoInteligenteNoComunicacion.agent.xml", null, null).get(sus);
+		//ISetPosicionSemaforos chat = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionSemaforos.class).get(sus); //Lama al servicio
+		//chat.setPosicionSemaforo(12, 34);
+		
+		/*IComponentIdentifier	cid	= cms.createComponent(null,"lights/CocheSimple.agent.xml", null, null).get(sus);
+		ISetPosicionAutos chat = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionAutos.class).get(sus); //Lama al servicio
+		chat.setPosicionAuto(12, 34,"norte");
+		System.out.println("Started chat component: "+cid);
+		*/
 	}
 
 

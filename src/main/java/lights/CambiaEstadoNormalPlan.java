@@ -23,7 +23,14 @@ public class CambiaEstadoNormalPlan extends Plan {
 		
 		 getBeliefbase().getBelief("estadoSemaforo").setFact(new Integer(cnt));
 		 getBeliefbase().getBelief("lineaActual").setFact(new Integer(actual));
-		 System.out.println("Estado semaforo: "+actual);
+		 switch (actual) {
+		 	case 1: System.out.println("Linea verde estado semaforo: Norte "); break;
+		 	case 2: System.out.println("Linea verde estado semaforo: Este "); break;
+		 	case 3: System.out.println("Linea verde estado semaforo: Sur "); break;
+		 	case 4: System.out.println("Linea verde estado semaforo: Oeste "); break;
+		 }
+			 
+		
 	}
 
 }

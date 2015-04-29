@@ -389,15 +389,18 @@
 	</events>
 	
 	<services>
-		<providedservice class="IEstadoSemaforoService">
+		<providedservice   class="IEstadoSemaforoService">
 			<implementation class="EstadoSemaforoService"/>
 		</providedservice>
 		<providedservice class="ITraficoSemaforoService">
 			<implementation class="TraficoEstadoSemaforo"/>
 		</providedservice>
-		<requiredservice name="posicionAutos" class="IPosicionAutoService" multiple="true" >
+		<providedservice class="ISetPosicionSemaforos">
+			<implementation class="SetPosicionSemaforosService"/>
+		</providedservice>
+		<!--<requiredservice name="posicionAutos" class="IPosicionAutoService" multiple="true" >
     		<binding scope="platform" dynamic="true"/>
-    	</requiredservice>
+    	</requiredservice> -->
     
 	</services>
 

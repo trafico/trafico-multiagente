@@ -19,7 +19,7 @@ public class EstadoSemaforoService implements IEstadoSemaforoService {
 	 */
 	public ITerminableFuture<PosicionSemaforo> getPosicion() {
 		
-		//System.out.println("Hola chavo");
+		System.out.println("Hola chavo");
 		
 		//Accedo a la base de creencias y despues convierto a valores numericos
 		IBelief creenciaPosX = agent.getBeliefbase().getBelief("posX"); 

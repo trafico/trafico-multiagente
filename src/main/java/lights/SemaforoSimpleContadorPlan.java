@@ -65,7 +65,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 				cnt = 0;
 				//Cada diez segundo actualizo mi creencia de trafico
 				//Actualizar el trafico en base a la posicion de cada automobil
-				try{
+				/*try{
 					IFuture<Collection<IPosicionAutoService>> servicioAutos = getServiceContainer().getRequiredServices("posicionAutos");
 					servicioAutos.addResultListener(new DefaultResultListener<Collection<IPosicionAutoService>>(){
 
@@ -132,7 +132,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 					
 				} catch(ServiceNotFoundException ex){
 
-				}
+				}*/
 				
 			}
 			else 
@@ -143,7 +143,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			System.out.println("Segundos transcurridos:"+(cnt+1));
+			//System.out.println("Segundos transcurridos:"+(cnt+1));
 
 			//Actualizar el trafico en base a la posicion de cada automobil
 			/*try{
