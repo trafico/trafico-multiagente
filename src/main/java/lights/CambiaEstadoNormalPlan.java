@@ -9,7 +9,7 @@ public class CambiaEstadoNormalPlan extends Plan {
 	public CambiaEstadoNormalPlan() {
 		super();
 		// TODO Auto-generated constructor stub
-		System.out.println("Created: "+this);
+		//System.out.println("Created: "+this);
 	}
 	
 	public void body() {
@@ -23,7 +23,7 @@ public class CambiaEstadoNormalPlan extends Plan {
 		
 		 getBeliefbase().getBelief("estadoSemaforo").setFact(new Integer(cnt));
 		 getBeliefbase().getBelief("lineaActual").setFact(new Integer(actual));
-		    System.out.println("Estado semaforo: "+actual);
+		 System.out.println("Estado semaforo: "+actual);
 	}
 
 }

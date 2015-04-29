@@ -40,8 +40,8 @@ public class SemaforoSimpleContadorPlan extends Plan {
 	public SemaforoSimpleContadorPlan() {
 		super();
 		// TODO Auto-generated constructor stub
-		int cnt = ((Integer)getBeliefbase().getBelief("estadoSemaforo").getFact()).intValue();
-		System.out.println("Created: "+this+" Estado semaforo: "+cnt);
+		//int cnt = ((Integer)getBeliefbase().getBelief("estadoSemaforo").getFact()).intValue();
+		//System.out.println("Created: "+this+" Estado semaforo: "+cnt);
 	}
 
 	public void body() {
