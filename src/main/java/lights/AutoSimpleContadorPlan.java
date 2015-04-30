@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import jadex.bridge.fipa.SFipa;
+import jadex.bridge.service.RequiredServiceInfo;
 import jadex.bridge.service.search.ServiceNotFoundException;
 import jadex.bdi.runtime.IMessageEvent;
 import jadex.bdi.runtime.Plan;
@@ -12,6 +13,7 @@ import jadex.bdiv3.BDIAgent;
 import jadex.commons.future.DefaultResultListener;
 import jadex.commons.future.IFuture;
 import jadex.commons.future.ITerminableFuture;
+import jadex.commons.future.ITerminableIntermediateFuture;
 import jadex.micro.annotation.Agent;
 
 /**
@@ -34,27 +36,39 @@ public class AutoSimpleContadorPlan extends Plan {
 
 	public void body() {
 		
-		try {
-			Thread.sleep(5000);
-			//Thread.sleep(500);                 //Dormir 5 segundos,,,
-		} catch(InterruptedException ex) {
-			Thread.currentThread().interrupt();
-		}
 		
-		while(true) {
+		//while(true) {
 			
 			/* Leer primero el semaforo, por medio de servicio y obtener su 
 			 * estado si estan en mi vecindad.
 			 */
 			int posX = ((Integer)getBeliefbase().getBelief("posX").getFact()).intValue();
 			int posY = ((Integer)getBeliefbase().getBelief("posY").getFact()).intValue();
-			System.out.println("Hola mi posici—n es"+posX+","+posY);
+			System.out.println("Hola mi posici—n es: "+posX+","+posY);
 			
 			//System.out.println( getServiceContainer().searchServices(IPosicionAutoService.class).getIntermediateResults());
+			RequiredServiceInfo[] bd = getServiceContainer().getRequiredServiceInfos();
+			bd[0].getName();
+			System.out.println(bd[0].getName() );
 			
-			IFuture<Collection<IEstadoSemaforoService>> servicioSemaforos = getServiceContainer().getRequiredServices("estadosDeSemaforos");
-			System.out.println("Hola mi posici—n22 es"+servicioSemaforos);
+			//ITerminableIntermediateFuture<Object> servicio = getServiceContainer().getRequiredServices("semEstado");
 			
+			IFuture<Collection<IEstadoSemaforoService>>	chatservices	= getServiceContainer().getRequiredServices("semEstado");
+			chatservices.addResultListener(new DefaultResultListener<Collection<IEstadoSemaforoService>>()
+			{
+				public void resultAvailable(Collection<IEstadoSemaforoService> result)
+				{
+					for(Iterator<IEstadoSemaforoService> it=result.iterator(); it.hasNext(); )
+					{
+						IEstadoSemaforoService cs = it.next();
+						cs.message();
+					}
+				}
+			});
+			
+			
+			//IFuture<Collection<IEstadoSemaforoService>> servicioSemaforos = getServiceContainer().getRequiredServices("semEstado");
+			/*
 			servicioSemaforos.addResultListener(new DefaultResultListener<Collection<IEstadoSemaforoService>>(){
 				
 				public void resultAvailable(Collection<IEstadoSemaforoService> result) {
@@ -120,10 +134,16 @@ public class AutoSimpleContadorPlan extends Plan {
 				//Thread.sleep(500);                 //1000 millisegundos un segundo : )
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
-			}
+			}*/
 			//System.out.println("Segundos transcurridos:"+(cnt+1));
+		/*	try {
+				Thread.sleep(1000);
+				//Thread.sleep(500);                 //1000 millisegundos un segundo : )
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
 
-		}
+		}*/
 	}
 	
 	public void avanzarNorte(){

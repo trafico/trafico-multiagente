@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cars.EstadoAuto;
+import cars.IEstadoAutoService;
 import jadex.bridge.fipa.SFipa;
 import jadex.bridge.service.search.ServiceNotFoundException;
 import jadex.bdi.runtime.IMessageEvent;
@@ -59,17 +61,17 @@ public class SemaforoSimpleContadorPlan extends Plan {
 		*/
 		
 		
-		while(true) {
+			while(true) {
 			int cnt = ((Integer)getBeliefbase().getBelief("segundosTrans").getFact()).intValue();
 			if (cnt == 10) {
 				cnt = 0;
 				//Cada diez segundo actualizo mi creencia de trafico
 				//Actualizar el trafico en base a la posicion de cada automobil
-				/*try{
-					IFuture<Collection<IPosicionAutoService>> servicioAutos = getServiceContainer().getRequiredServices("posicionAutos");
-					servicioAutos.addResultListener(new DefaultResultListener<Collection<IPosicionAutoService>>(){
+				try{
+					IFuture<Collection<IEstadoAutoService>> servicioAutos = getServiceContainer().getRequiredServices("posicionAutos");
+					servicioAutos.addResultListener(new DefaultResultListener<Collection<IEstadoAutoService>>(){
 
-						public void resultAvailable(Collection<IPosicionAutoService> result) {
+						public void resultAvailable(Collection<IEstadoAutoService> result) {
 							
 							norte.getAndSet(0) ;
 							sur.getAndSet(0) ;
@@ -79,13 +81,13 @@ public class SemaforoSimpleContadorPlan extends Plan {
 							int posX = ((Integer)getBeliefbase().getBelief("posX").getFact()).intValue();
 							int posY = ((Integer)getBeliefbase().getBelief("posY").getFact()).intValue();
 							
-							for(Iterator<IPosicionAutoService> it=result.iterator(); it.hasNext(); )
+							for(Iterator<IEstadoAutoService> it=result.iterator(); it.hasNext(); )
 							{
-								IPosicionAutoService cs = it.next();
-								ITerminableFuture res = cs.getPosicionAuto();
-								PosicionAuto miPos  = (PosicionAuto) res.get();
-								int posX_rec = miPos.getPosX();
-								int posY_rec = miPos.getPosY();
+								IEstadoAutoService cs = it.next();
+								ITerminableFuture res = cs.getEstadoAuto();
+								EstadoAuto miPos  = (EstadoAuto) res.get();
+								int posX_rec = miPos.getPox();
+								int posY_rec = miPos.getPoy();
 								
 								if( (posY_rec - (posY-10) > 0) && (posX_rec == posX))
 									sur.incrementAndGet();
@@ -132,7 +134,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 					
 				} catch(ServiceNotFoundException ex){
 
-				}*/
+				}
 				
 			}
 			else 
@@ -143,7 +145,7 @@ public class SemaforoSimpleContadorPlan extends Plan {
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			//System.out.println("Segundos transcurridos:"+(cnt+1));
+			System.out.println("Segundos transcurridos:"+(cnt+1));
 
 			//Actualizar el trafico en base a la posicion de cada automobil
 			/*try{

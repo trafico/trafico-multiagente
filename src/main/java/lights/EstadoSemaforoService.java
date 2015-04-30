@@ -49,5 +49,11 @@ public class EstadoSemaforoService implements IEstadoSemaforoService {
 		return ret;
 		
 	}
+	
+	public void message()
+	{
+		System.out.println("Hola chavo");
+	}
+	
 
 }

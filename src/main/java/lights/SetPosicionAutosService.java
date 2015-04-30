@@ -20,9 +20,11 @@ public class SetPosicionAutosService implements ISetPosicionAutos {
 		agent.getBeliefbase().getBelief("direccion").setFact(direccion);
 		IBelief creenciaPosX = agent.getBeliefbase().getBelief("posX"); 
 		IBelief creenciaPosY = agent.getBeliefbase().getBelief("posY");
+		IBelief dir = agent.getBeliefbase().getBelief("direccion");
 		int posX2 = (Integer) creenciaPosX.getFact();
 		int posY2 = (Integer) creenciaPosY.getFact();
-		System.out.println("Mi posicion es:"+posX2+","+posY2);
+		String direccion2 = (String) dir.getFact();
+		System.out.println("Mi posicion es:"+posX2+","+posY2+" linea: "+direccion2);
 			
 	}
 	

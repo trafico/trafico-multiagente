@@ -224,7 +224,7 @@
 		<providedservice class="ISetPosicionAutos">
 			<implementation class="SetPosicionAutosService"/>
 		</providedservice>
-    	<requiredservice name="estadosDeSemaforos" class="IEstadoSemaforoService" multiple="true" >
+    	<requiredservice name="semEstado" class="IEstadoSemaforoService" multiple="true" >
     		<binding scope="platform" dynamic="true"/>
     	</requiredservice>
     </services>

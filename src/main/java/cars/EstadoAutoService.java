@@ -13,7 +13,6 @@ public class EstadoAutoService implements IEstadoAutoService {
 	@ServiceComponent
 	protected IBDIInternalAccess agent;
 
-	@Override
 	public ITerminableFuture<EstadoAuto> getEstadoAuto() {
 
 		IBelief estadoAuto = agent.getBeliefbase().getBelief("estadoAuto");

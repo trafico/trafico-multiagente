@@ -4,6 +4,8 @@ import jadex.bdi.runtime.IBDIInternalAccess;
 import jadex.bdi.runtime.IBelief;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.annotation.ServiceComponent;
+import jadex.bridge.service.annotation.ServiceStart;
+import jadex.commons.future.IFuture;
 import jadex.commons.future.ITerminableFuture;
 import jadex.commons.future.TerminableFuture;
 
@@ -11,6 +13,14 @@ import jadex.commons.future.TerminableFuture;
 public class PosicionAutoService implements IPosicionAutoService {
 	@ServiceComponent
 	protected IBDIInternalAccess agent; //Representa al agente
+	
+	@ServiceStart
+	public IFuture<Void> startService()
+	{
+		System.out.println("Hola mundo");
+		return null;
+		
+	}
 
 	public ITerminableFuture<PosicionAuto> getPosicionAuto() {
 		

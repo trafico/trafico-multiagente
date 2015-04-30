@@ -3,6 +3,8 @@ package lights;
 import java.util.HashMap;
 import java.util.Map;
 
+import cars.EstadoAuto;
+import cars.IEstadoAutoService;
 import jadex.base.Starter;
 import jadex.bridge.IComponentIdentifier;
 import jadex.bridge.IExternalAccess;
@@ -11,6 +13,7 @@ import jadex.bridge.service.search.SServiceProvider;
 import jadex.bridge.service.types.cms.CreationInfo;
 import jadex.bridge.service.types.cms.IComponentManagementService;
 import jadex.commons.future.IFuture;
+import jadex.commons.future.ITerminableFuture;
 import jadex.commons.future.ThreadSuspendable;
 
 public class Experimento {
@@ -126,9 +129,15 @@ public class Experimento {
 		/*
 		 * Posicionamiento de coches
 		 */
-		IComponentIdentifier	cid	= cms.createComponent(null,"lights/CocheSimple.agent.xml", null, null).get(sus);
-		ISetPosicionAutos chat = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionAutos.class).get(sus); //Lama al servicio
-		chat.setPosicionAuto(0, 20,"norte");
+		IComponentIdentifier	cid	= cms.createComponent(null,"cars/SimpleCarBDI.agent.xml", null, null).get(sus);
+		IEstadoAutoService chat = SServiceProvider.getService(platform.getServiceProvider(), cid, IEstadoAutoService.class).get(sus); //Lama al servicio
+		//chat.getEstadoAuto().get().getPox();
+	
+
+		//IComponentIdentifier	cid2	= cms.createComponent(null,"lights/CocheSimple.agent.xml", null, null).get(sus);
+		//ISetPosicionAutos chat2 = SServiceProvider.getService(platform.getServiceProvider(), cid, ISetPosicionAutos.class).get(sus); //Lama al servicio
+		//chat2.setPosicionAuto(1, 0,"sur");
+
 		
 		/*for(int i=0; i<50;i++){
 			for(int j=0; j<50; j++) {
