@@ -321,6 +321,12 @@
 		</messageevent>
 
 	</events>
+	
+	<services>
+		<providedservice class="IEstadoAutoService">
+			<implementation class="EstadoAutoService"/>
+		</providedservice>
+	</services>
 
 	<properties>
 		<!-- Only log outputs >= level are printed. -->

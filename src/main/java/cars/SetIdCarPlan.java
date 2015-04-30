@@ -20,6 +20,8 @@ public class SetIdCarPlan extends SetParamPlan {
 			String[] mensaje2={mensaje[0], mensaje[0]};
 			mensaje= mensaje2;
 			actualizarParam(nombres, "String");
+			String v1= mensaje[1];
+			ea.setIdCar(v1);
 		}
 	}
 

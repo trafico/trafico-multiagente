@@ -17,6 +17,8 @@ public class SetCarDirPlan extends SetParamPlan {
 		if(isCondicion()){
 			String nombres[]={"direccion"};
 			actualizarParam(nombres, "int");
+			int v= Integer.parseInt(mensaje[1]);
+			ea.setDir(v);
 		}
 	}
 

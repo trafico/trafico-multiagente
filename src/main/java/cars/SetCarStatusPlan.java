@@ -18,6 +18,8 @@ public class SetCarStatusPlan extends SetParamPlan {
 		if(isCondicion()){
 			String[] nombres={"isActivado"};
 			actualizarParam(nombres, "boolean");
+			boolean v1= Boolean.parseBoolean(mensaje[1]);
+			ea.setStatus(v1);
 		}
 	}
 }

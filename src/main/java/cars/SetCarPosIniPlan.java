@@ -18,6 +18,10 @@ public class SetCarPosIniPlan extends SetParamPlan {
 		if(isCondicion()){
 			String [] nombres={"x_ini", "y_ini"};
 			actualizarParam(nombres, "int");
+			int v1= Integer.parseInt(mensaje[1]);
+			int v2= Integer.parseInt(mensaje[2]);
+			ea.setPox(v1);
+			ea.setPoy(v2);
 		}
 	}
 

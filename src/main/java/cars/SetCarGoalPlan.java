@@ -18,6 +18,10 @@ public class SetCarGoalPlan extends SetParamPlan {
 		if(isCondicion()){
 			String [] nombres={"x_fin", "y_fin"};
 			actualizarParam(nombres, "int");
+			int v1= Integer.parseInt(mensaje[1]);
+			int v2= Integer.parseInt(mensaje[2]);
+			ea.setXFin(v1);
+			ea.setYFin(v2);
 		}
 	}
 

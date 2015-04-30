@@ -18,6 +18,8 @@ public class SetCarVelPlan extends SetParamPlan {
 		if(isCondicion()){
 			String [] nombres={"velocidad"};
 			actualizarParam(nombres, "int");
+			int v1= Integer.parseInt(mensaje[1]);
+			ea.setVel(v1);
 		}
 	}
 }
