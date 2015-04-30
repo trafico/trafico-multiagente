@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	<H3>Semaforo simple.</H3>
+	Describe un semarofo con temporizador.
+	<H4>Explicacion</H4>
+	Este semaro cambia de color dando acceso a los carros, por el momento
+	no tiene creencias ni intenciones. Solo recibe una peticion de cambio mediante
+	la interfaz conversacion de jadex 
+-->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
+	name="SemaforoSimple"
+	package="lights">
+
+	<imports>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+		<import>jadex.bridge.fipa.*</import>
+	</imports>
+
+	<plans>
+		<plan name="egtrans">
+			<body class="SemaforoSimpleCambioLuzPlan"/>
+			<waitqueue>
+				<messageevent ref="request_translation"/>
+			</waitqueue>
+		</plan>
+	</plans>
+
+	<events>
+	<!-- Specifies a translation request being all
+			messages with performative request. -->
+		<messageevent name="request_translation" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+		</messageevent>
+	</events>
+
+	<properties>
+		<!-- Only log outputs >= level are printed. -->
+		<!-- <property name="logging.level">Level.INFO</property> -->
+ 		<!-- The default parent handler prints out log messages on the console. -->
+		<property name="logging.useParentHandlers">true</property>
+		<!-- Debugging flag. -->
+		<!-- <property name="debugging">true</property> -->
+    </properties>
+
+</agent>
+

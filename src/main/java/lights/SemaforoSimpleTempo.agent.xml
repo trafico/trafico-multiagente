@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	<H3>Semáforo simple.</H3>
+	Describe un semárofo con temporizador.
+	<H4>Explicación</H4>
+	Este semáforo cambia de color dando acceso a los carros, por el momento
+	no tiene intenciones. El cambio es mediante un temporizador.
+ -->
+<agent xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jadex.sourceforge.net/jadex
+	                    http://jadex.sourceforge.net/jadex-bdi-2.2.xsd"
+	name="SemaforoSimpleTempo"
+	package="lights">
+
+	<imports>
+		<import>java.util.logging.*</import>
+		<import>java.util.*</import>
+		<import>jadex.bridge.fipa.*</import>
+	</imports>
+
+	<beliefs>
+		<!-- Esta creencia determina el numero de segundos que han transcurrido. -->
+        <belief name="segundosTrans" class="int">
+            <fact>0</fact>
+        </belief>
+        
+        <!-- Esta creencia determina el estado del semaforo. -->
+        <belief name="estadoSemaforo" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Norte. -->
+        <belief name="estadoSemaforoNorte" class="int">
+            <fact>0</fact>
+        </belief>
+        
+         <!-- Esta creencia determina el estado del semaforo vista Sur. -->
+        <belief name="estadoSemaforoSur" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Este. -->
+        <belief name="estadoSemaforoEste" class="int">
+            <fact>0</fact>
+        </belief>
+        
+          <!-- Esta creencia determina el estado del semaforo vista Oeste. -->
+        <belief name="estadoSemaforoOeste" class="int">
+            <fact>0</fact>
+        </belief>
+	</beliefs>
+
+	<plans>
+		 <!-- Plan default, aumenta el contador del semaforo. -->
+        <plan name="contadorPlanNormal">
+            <body class="SemaforoSimpleContadorPlan"/>
+        </plan>
+       	<!-- Este plan cambia el estado del semaforo segun el numero de segundos transcurridos
+         sin trafico ni comunicacion, cambia cada 10 segundos -->
+        <plan name="cambiaEstadoNormal">
+            <body class="CambiaEstadoNormalPlan"/>
+            <trigger>
+                <condition>
+                    $beliefbase.segundosTrans>0 &amp;&amp; $beliefbase.segundosTrans%10==0
+                </condition>
+            </trigger>
+        </plan>
+        <!-- Este plan permite conocer el estado del semaforo -->
+		<plan name="peticionEstado">
+			<body class="PeticionEstadoPlan"/>
+			<trigger>
+				<messageevent ref="request_state"/>
+			</trigger>
+		</plan>
+	</plans>
+
+	<events>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="request_state" direction="receive" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.REQUEST</value>
+			</parameter>
+			<match>$content instanceof String &amp;&amp; ((String)$content).startsWith("request state")</match>
+		</messageevent>
+		<!-- Responde con el estado del agente. -->
+		<messageevent name="inform" direction="send" type="fipa">
+			<parameter name="performative" class="String" direction="fixed">
+				<value>SFipa.INFORM</value>
+			</parameter>
+		</messageevent>
+	</events>
+
+	<properties>
+		<!-- Only log outputs >= level are printed. -->
+		<!-- <property name="logging.level">Level.INFO</property> -->
+ 		<!-- The default parent handler prints out log messages on the console. -->
+		<property name="logging.useParentHandlers">true</property>
+		<!-- Debugging flag. -->
+		<!-- <property name="debugging">true</property> -->
+    </properties>
+    
+    <configurations>
+		<configuration name="default">
+			<plans>
+				<initialplan ref="contadorPlanNormal"/>
+			</plans>
+		</configuration>
+ 	</configurations>
+
+</agent>
+

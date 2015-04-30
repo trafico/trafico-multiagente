@@ -1,0 +1,13 @@
+package cars;
+
+public class GetCarStatusPlan extends GetParamPlan {
+
+	@Override
+	public void body() {
+		// TODO Auto-generated method stub
+		if(isCondicion()){
+			crearMensajeSalida("CarInform", "isAvanzando", "boolean");
+		}
+	}
+
+}
