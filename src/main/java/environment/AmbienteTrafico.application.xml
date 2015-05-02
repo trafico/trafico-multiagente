@@ -12,6 +12,8 @@
 		<import>jadex.extension.envsupport.environment.space2d.*</import>
 		<import>jadex.extension.envsupport.environment.RoundBasedExecutor</import>
 		<import>jadex.extension.envsupport.math.*</import>
+		<import>jadex.commons.SFunction</import>
+		<import>jadex.extension.envsupport.observer.gui.plugin.*</import>
 		<import>jadex.bridge.service.clock.IClockService</import>
 		<import>jadex.extension.envsupport.dataview.*</import>
 		<import>jadex.extension.envsupport.observer.perspective.*</import>
@@ -124,7 +126,7 @@
 								
 								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png">
 								
-									<env:drawcondition>$object.lineaActual==1</env:drawcondition>
+									<env:drawcondition>$object.getProperty("lineaActual").equals("1")</env:drawcondition>
 								</env:texturedrectangle>
 								<env:rectangle layer="0" size="vision_size" color="#ffff007f" />
 						</env:drawable>
