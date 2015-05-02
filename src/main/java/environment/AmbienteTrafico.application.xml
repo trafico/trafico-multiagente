@@ -24,7 +24,7 @@
 	</imports>
 <extensiontypes>
 
-<!-- Declaration of a grid environment as space type. -->
+<!-- Declaration of a grid environment as space type. ....-->
 <env:envspacetype name="tm2dspace" width="90" height="90" class="Grid2D">
 
 
