@@ -4,8 +4,6 @@ import jadex.bdi.runtime.IBDIInternalAccess;
 import jadex.bdi.runtime.IBelief;
 import jadex.bridge.service.annotation.Service;
 import jadex.bridge.service.annotation.ServiceComponent;
-import jadex.commons.future.Future;
-import jadex.commons.future.IFuture;
 import jadex.commons.future.ITerminableFuture;
 import jadex.commons.future.TerminableFuture;
 
@@ -19,16 +17,9 @@ public class EstadoSemaforoService implements IEstadoSemaforoService {
 	 * @author josue
 	 * @return Future, con una posicion
 	 */
-	
-	public IFuture serviceStarted()
-	{
-		System.out.println("Hola ch333avo");
-		return null;
+	public ITerminableFuture<PosicionSemaforo> getPosicion() {
 		
-	}
-	public IFuture<PosicionSemaforo> getPosicion() {
-		
-		System.out.println("Hola chavo");
+		//System.out.println("Hola chavo");
 		
 		//Accedo a la base de creencias y despues convierto a valores numericos
 		IBelief creenciaPosX = agent.getBeliefbase().getBelief("posX"); 
@@ -53,9 +44,8 @@ public class EstadoSemaforoService implements IEstadoSemaforoService {
 		PosicionSemaforo miPosicion = new PosicionSemaforo(posX,posY,estado);
 		System.out.println("Posicion a enviar:"+miPosicion);
 		
-		Future<PosicionSemaforo> ret =  new Future<PosicionSemaforo>();
+		TerminableFuture<PosicionSemaforo> ret =  new TerminableFuture<PosicionSemaforo>();
 		ret.setResult(miPosicion);
-		
 		return ret;
 		
 	}

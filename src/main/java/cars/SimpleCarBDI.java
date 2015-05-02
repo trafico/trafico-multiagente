@@ -108,8 +108,8 @@ public class SimpleCarBDI implements IEstadoAutoService {
 
 			public void resultAvailable(Collection<IEstadoAutoService> arg0) {
 				System.out.println(arg0.size());
-				for (Iterator iterator = arg0.iterator(); iterator.hasNext();) {
-			        EstadoAuto esa = (EstadoAuto) iterator.next();
+				for (Iterator<IEstadoAutoService> iterator = arg0.iterator(); iterator.hasNext();) {
+			        EstadoAuto esa = iterator.next().getEstadoAuto().get();
 			        System.out.println(esa.getPox()+"   "+esa.getPoy());
 
 			    }
