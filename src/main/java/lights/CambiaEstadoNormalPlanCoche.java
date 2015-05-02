@@ -41,7 +41,7 @@ public class CambiaEstadoNormalPlanCoche extends Plan {
 				for(Iterator<IEstadoSemaforoService> it=result.iterator(); it.hasNext(); )
 				{
 					IEstadoSemaforoService cs = it.next();
-					ITerminableFuture res = cs.getPosicion();
+					ITerminableFuture res = (ITerminableFuture) cs.getPosicion();
 					PosicionSemaforo miPos  = (PosicionSemaforo) res.get();
 					//cs.message(agent.getComponentIdentifier().getName(), "Hello");
 					System.out.println("Yo"+ getComponentIdentifier().getName() +"Mi posicion recibida es: "+miPos);

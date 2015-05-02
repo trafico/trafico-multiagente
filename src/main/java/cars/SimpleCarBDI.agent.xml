@@ -10,6 +10,7 @@
 		<import>java.util.logging.*</import>
 		<import>java.util.*</import>
 		<import>jadex.bridge.fipa.*</import>
+		<import>lights.*</import>
 	</imports>
 
 	<beliefs>
@@ -326,6 +327,9 @@
 		<providedservice class="IEstadoAutoService">
 			<implementation class="EstadoAutoService"/>
 		</providedservice>
+		<requiredservice name="estadoSemaforo" class="IEstadoSemaforoService" multiple="true" >
+    		<binding scope="platform" dynamic="true"/>
+    	</requiredservice>
 	</services>
 
 	<properties>
@@ -346,3 +350,4 @@
 	</configurations>
 
 </agent>
+

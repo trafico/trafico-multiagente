@@ -1,10 +1,10 @@
 package cars;
 
+import jadex.commons.future.IFuture;
 
-import jadex.commons.future.ITerminableFuture;
 
 public interface IEstadoAutoService {
 	
-	public ITerminableFuture<EstadoAuto> getEstadoAuto();
+	public IFuture<EstadoAuto> getEstadoAuto();
 
 }

@@ -8,9 +8,8 @@ public class EstadoAuto {
 	private int poy;
 	private int xfin;
 	private int yfin;
-	private String id;
 	
-	public EstadoAuto(String id, int v, int d, int px, int py, int xf, int yf, boolean s){
+	public EstadoAuto(int v, int d, int px, int py, int xf, int yf, boolean s){
 		velocidad= v;
 		direccion= d;
 		pox= px;
@@ -18,14 +17,6 @@ public class EstadoAuto {
 		xfin= xf;
 		yfin= yf;
 		status= s;
-	}
-	
-	public void setIdCar(String t){
-		id=t;
-	}
-	
-	public String getIdCar(){
-		return id;
 	}
 	
 	public void setStatus(boolean s){
