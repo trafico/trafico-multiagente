@@ -128,10 +128,8 @@
 						</env:drawable>
 						<env:drawable objecttype="semaforo1" width="1" height="1" >
 								<env:property name="vision_size" dynamic="true">new Vector2Double($object.vision_range*2+1)</env:property>
-								
 								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png">
-								
-									<env:drawcondition>$object.edo==4</env:drawcondition>
+									<env:drawcondition>$object.edo==3</env:drawcondition>
 								</env:texturedrectangle>
 								<env:rectangle layer="0" size="vision_size" color="#ffff007f" />
 						</env:drawable>
