@@ -29,6 +29,8 @@ import jadex.commons.gui.future.SwingResultListener;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.AgentCreated;
+import jadex.micro.annotation.Argument;
+import jadex.micro.annotation.Arguments;
 import jadex.micro.annotation.Description;
 import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
@@ -45,9 +47,14 @@ import jadex.bridge.service.RequiredServiceInfo;
 @ProvidedServices( {@ProvidedService(type=IPosicionSemaforo.class),@ProvidedService(type=ITraficoService.class) })
 
 @RequiredServices({@RequiredService(name="transser", type=IPosicionSemaforo.class, 
-binding=@Binding(scope=RequiredServiceInfo.SCOPE_PLATFORM)) ,
+binding=@Binding(scope=RequiredServiceInfo.SCOPE_PLATFORM,dynamic=true)) ,
 @RequiredService(name="traficos", type=ITraficoService.class, 
-binding=@Binding(scope=RequiredServiceInfo.SCOPE_PLATFORM))})
+binding=@Binding(scope=RequiredServiceInfo.SCOPE_PLATFORM,dynamic=true))})
+
+@Arguments({
+	  @Argument(name="posX", clazz=Integer.class, defaultvalue="0"),
+	  @Argument(name="posY", clazz=Integer.class, defaultvalue="0")
+	})
 
 public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 
@@ -93,13 +100,17 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 	@Belief
 	protected int traficoLineaOeste;
 
+	@Belief
+	protected int carrosQuePasaron;
+	
+
 
 	@AgentCreated
 	public void init()
 	{
 		System.out.println("Created: "+this);
-		this.posX= 0;
-		this.posY = 0;
+		this.posX= (Integer) agent.getArgument("posX");
+		this.posY = (Integer) agent.getArgument("posY");
 		this.lineaActual = 1; //Comienza siempre en norte
 		this.traficoNorte = 0;
 		this.traficoSur = 0;
@@ -161,7 +172,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		if(lineaActual > 4){
 			lineaActual =1;
 		}
-		System.out.println("Linea actual: "+ lineaActual);
+		//System.out.println("Linea actual: "+ lineaActual);
 		//Mando llamar al servicio
 		
 		//IPosicionSemaforo cs = (IPosicionSemaforo)agent.getServiceContainer().getRequiredService("transser").get();
@@ -169,7 +180,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		//System.out.println(cs.getPosicionSemaforo().toString());
 		
 		IFuture<Collection<IPosicionSemaforo>> cs2 = agent.getServiceContainer().getRequiredServices("transser");
-		System.out.println(cs2);
+		//System.out.println(cs2);
 		
 		cs2.addResultListener(new DefaultResultListener<Collection<IPosicionSemaforo>>()
 		        {
@@ -179,7 +190,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		            {
 		            	IPosicionSemaforo cs = it.next();
 		              //cs.message(agent.getComponentIdentifier().getName(), text);
-		            	System.out.println(cs.getPosicionSemaforo().get());
+		            	//System.out.println(cs.getPosicionSemaforo().get());
 		            }
 		          }
 		        });
@@ -188,7 +199,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		 * Servicio de trafico
 		 */
 		IFuture<Collection<ITraficoService>> cs3 = agent.getServiceContainer().getRequiredServices("traficos");
-		System.out.println(cs3);
+		//System.out.println(cs3);
 		
 		cs3.addResultListener(new DefaultResultListener<Collection<ITraficoService>>()
 		        {
@@ -198,7 +209,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		            {
 		            	ITraficoService cs = it.next();
 		              //cs.message(agent.getComponentIdentifier().getName(), text);
-		            	System.out.println(cs.getTraficoSemaforo().get());
+		            	//System.out.println(cs.getTraficoSemaforo().get());
 		            }
 		          }
 		        });

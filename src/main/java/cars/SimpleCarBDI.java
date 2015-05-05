@@ -103,6 +103,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 //		agent.adoptPlan(new AvanzarPlan(this, 10));
 //		agent.adoptPlan(new GirarDerechaPlan(this));
 //		agent.adoptPlan(new GirarIzquierdaPlan(this));
+		
 		System.out.println("Aqui");
 		SServiceProvider.getServices(agent.getServiceProvider(), IEstadoAutoService.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IEstadoAutoService>>(){
 
