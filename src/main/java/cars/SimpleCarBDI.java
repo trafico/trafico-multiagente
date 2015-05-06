@@ -56,11 +56,11 @@ import lights.PosicionSemaforo;
 
 
 @Arguments({
-	  @Argument(name="pxin", clazz=Integer.class, defaultvalue="0"),
-	  @Argument(name="pyin", clazz=Integer.class, defaultvalue="0"),
+	  @Argument(name="pxin", clazz=Double.class, defaultvalue="0"),
+	  @Argument(name="pyin", clazz=Double.class, defaultvalue="0"),
 	  @Argument(name="map", clazz=GrafoCalles.class, defaultvalue="null"),
-	  @Argument(name= "goalx", clazz=Integer.class, defaultvalue="0"),
-	  @Argument(name= "goaly", clazz= Integer.class, defaultvalue="0"),
+	  @Argument(name= "goalx", clazz=Double.class, defaultvalue="0"),
+	  @Argument(name= "goaly", clazz= Double.class, defaultvalue="0"),
 	  @Argument(name= "intel", clazz= Boolean.class, defaultvalue="false"),
 	  @Argument(name= "ruta", clazz= String.class, defaultvalue= "random")
 	})
@@ -68,15 +68,15 @@ import lights.PosicionSemaforo;
 @Plans({@Plan(body=@Body(DestinoPlan.class))})
 public class SimpleCarBDI implements IEstadoAutoService {
 	@Belief
-	private int x_fin;
+	private double x_fin;
 	@Belief
-	private int y_fin;
+	private double y_fin;
 	@Belief
-	private int pox;
+	private double pox;
 	@Belief
-	private int poy;
+	private double poy;
 	@Belief
-	private int velocidad;
+	private double velocidad;
 	@Belief
 	private int v_max;
 	@Belief
@@ -93,21 +93,44 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	private String tipoRuta;
 	@Belief
 	private PosicionSemaforo ps;
+	@Belief
+	private String [] ruta;
 
 	@Agent
 	BDIAgent agent;
-	
-	/** The environment. */
-	protected Grid2D env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
-	
-	/** The environment. */
-	protected ISpaceObject myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+
+	protected Grid2D env;
+	protected ISpaceObject myself;
+	protected Vector2Double area;
 	
 	public SimpleCarBDI() {
 		
 	}
 	
-	public PosicionSemaforo isSemaforo(int px, int py){
+	@AgentCreated
+	public void init(){
+		this.pox= (Double) agent.getArgument("pxin");
+		this.poy= (Double) agent.getArgument("pyin");
+		obtenerPos();
+		this.x_fin= (Double) agent.getArgument("goalx");
+		this.y_fin= (Double) agent.getArgument("goaly");
+		this.tipoRuta= (String) agent.getArgument("ruta");
+		this.gc= (GrafoCalles) agent.getArgument("map");
+		this.status= true;
+		this.direccion= 1;
+		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
+		area= (Vector2Double) env.getAreaSize();
+		env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
+		myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+	}
+	
+	private void obtenerPos(){
+		IVector2 mypos= (IVector2)myself.getProperty("position");
+		pox= mypos.getXAsDouble();
+		poy= mypos.getYAsDouble();
+	}
+	
+	private PosicionSemaforo isSemaforo(int px, int py){
 		ps=null;
 		SServiceProvider.getServices(agent.getServiceProvider(), IPosicionSemaforo.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IPosicionSemaforo>>(){
 
@@ -120,7 +143,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 				// TODO Auto-generated method stub
 				for (Iterator<IPosicionSemaforo> iterator = arg0.iterator(); iterator.hasNext();) {
 			        PosicionSemaforo psm = iterator.next().getPosicionSemaforo().get();
-			        if(Math.sqrt(Math.pow(psm.getPosX()-pox, 2)+Math.pow(psm.getPosY()-poy, 2))<=1.5)
+			        if(getDistancia(psm.getPosX(), pox, psm.getPosY(), poy)<=1.5)
 			        	ps= psm;
 
 			    }
@@ -128,21 +151,6 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		});
 		return ps;
 		}
-	
-	@AgentCreated
-	public void init()
-	{
-		this.pox= (Integer) agent.getArgument("pxin");
-		this.poy= (Integer) agent.getArgument("pyin");
-		this.x_fin= (Integer) agent.getArgument("goalx");
-		this.y_fin= (Integer) agent.getArgument("goaly");
-		this.tipoRuta= (String) agent.getArgument("ruta");
-		this.gc= (GrafoCalles) agent.getArgument("map");
-		this.status= true;
-		this.direccion= 1;
-		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
-		env.g
-	}
 	
 	@Plan(trigger=@Trigger(factchangeds={"pox", "poy", "x_fin", "y_fin","status","direccion","velocidad"}))
 	public void actualizarEstado(){
@@ -153,41 +161,9 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		ea.setVel(velocidad);
 		ea.setXFin(x_fin);
 		ea.setYFin(y_fin);
+		Vector2Double v2= new Vector2Double(pox, poy);
+		myself.setProperty("position", v2);
 		System.out.println("Se actualizaron los datos");
-	}
-	
-	@Plan
-	public void llegarDestino(){
-		IVector2 posi= posDisponible.getPosicion();
-		pox= posi.getXAsInteger();
-		poy= posi.getYAsInteger();
-		while (true){
-			
-			IVector2 myPosEnv = (IVector2) myself.getProperty("position");
-			this.pox= myPosEnv.getXAsInteger();
-			this.poy= myPosEnv.getYAsInteger();
-			//System.out.println(pox+"   "+poy);
-			System.out.println(myself);
-			Vector2Double v2= new Vector2Double(pox+50, poy);
-			
-			myself.setProperty("position", v2);
-			
-//			IVector2 posifin= posDisponible.getPosicion();
-//			x_fin= posifin.getXAsInteger();
-//			y_fin= posifin.getYAsInteger();
-//			int [] emap= equivMap(pox, poy, x_fin, y_fin);
-//			String ruta= Rutas.getRutaRandom(gc.getGrafo(), emap[0], emap[1]);
-//			System.out.println(emap[0]+"   "+emap[1]);
-//			moverCoche(ruta);
-			
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
-		}
 	}
 	
 	public void moverCoche(String ruta){
@@ -195,7 +171,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		
 	}
 	
-	public int[] equivMap(int x1, int y1, int x2, int y2){
+	private int[] equivMap(int x1, int y1, int x2, int y2){
 		int [] emap= new int[2];
 		int nx1= (x1-1)/10;
 		int ny1= (y1-1)/10;
@@ -214,129 +190,132 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		emap[1]= mapa2[nx2][ny2];
 		return emap;
 	}
-
+	
+	private double getDistancia(double x1, double y1, double x2, double y2){
+		double res= Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
+		return res;
+	}
+	
+	public boolean isCarNext(double xn, double yn){
+		status= true;
+		SServiceProvider.getServices(agent.getServiceProvider(), IEstadoAutoService.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IEstadoAutoService>>(){
+			
+						public void resultAvailable(Collection<IEstadoAutoService> arg0) {
+							for (Iterator<IEstadoAutoService> iterator = arg0.iterator(); iterator.hasNext();) {
+						        EstadoAuto esa = iterator.next().getEstadoAuto().get();
+						        System.out.println(esa.getPox()+"   "+esa.getPoy());
+						        if(getDistancia(esa.getPox(),pox, esa.getPoy(), poy)<=1.5)
+						        	status= false;
+			
+						    }
+							
+						}
+			
+						public void exceptionOccurred(Exception arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+		return status;
+	}
+	
+	private void calcularRuta(int[][] mapa, int orig, int dest){
+		String r= Rutas.getRutaRandom(mapa, orig, dest);
+		ruta= r.split(" ");
+	}
+	
 	@AgentBody
-	public void body() {
-		
-		IVector2 posi= posDisponible.getPosicion();
-		pox= posi.getXAsInteger();
-		poy= posi.getYAsInteger();
-		while (true){
-			
-			IVector2 myPosEnv = (IVector2) myself.getProperty("position");
-			this.pox= myPosEnv.getXAsInteger();
-			this.poy= myPosEnv.getYAsInteger();
-			System.out.println(pox+"   "+poy);
-//			System.out.println(myself);
-			Vector2Double v2= new Vector2Double(pox+1, poy);
-			
-			myself.setProperty("position", v2);
-			
-//			IVector2 posifin= posDisponible.getPosicion();
-//			x_fin= posifin.getXAsInteger();
-//			y_fin= posifin.getYAsInteger();
-//			int [] emap= equivMap(pox, poy, x_fin, y_fin);
-//			String ruta= Rutas.getRutaRandom(gc.getGrafo(), emap[0], emap[1]);
-//			System.out.println(emap[0]+"   "+emap[1]);
-//			moverCoche(ruta);
-			
+	public void body(){
+		while(true){
+			pox= pox+1;
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
-		
-//		agent.adoptPlan(new DetenersePlan(this));
-//		agent.adoptPlan(new AvanzarPlan(this, 10));
-//		agent.adoptPlan(new GirarDerechaPlan(this));
-//		agent.adoptPlan(new GirarIzquierdaPlan(this));
-		//agent.adoptPlan(this.llegarDestino());
-		
-//		System.out.println("Aqui");
-//		SServiceProvider.getServices(agent.getServiceProvider(), IEstadoAutoService.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IEstadoAutoService>>(){
-//
-//			public void resultAvailable(Collection<IEstadoAutoService> arg0) {
-//				System.out.println(arg0.size());
-//				for (Iterator<IEstadoAutoService> iterator = arg0.iterator(); iterator.hasNext();) {
-//			        EstadoAuto esa = iterator.next().getEstadoAuto().get();
-//			        System.out.println(esa.getPox()+"   "+esa.getPoy());
-//
-//			    }
-//				
-//			}
-//
-//			public void exceptionOccurred(Exception arg0) {
-//				// TODO Auto-generated method stub
-//				
+	}
+
+//	@AgentBody
+//	public void body() {
+//		
+//		IVector2 posi= posDisponible.getPosicion();
+//		pox= posi.getXAsInteger();
+//		poy= posi.getYAsInteger();
+//		System.out.println(pox+"  "+poy);
+//		while (true){
+//			
+//			IVector2 myPosEnv = (IVector2) myself.getProperty("position");
+//			this.pox= myPosEnv.getXAsInteger();
+//			this.poy= myPosEnv.getYAsInteger();
+//			System.out.println(pox+"   "+poy);
+////			System.out.println(myself);
+//			Vector2Double v2= new Vector2Double(pox+1, poy);
+//			
+//			myself.setProperty("position", v2);
+//			
+////			IVector2 posifin= posDisponible.getPosicion();
+////			x_fin= posifin.getXAsInteger();
+////			y_fin= posifin.getYAsInteger();
+////			int [] emap= equivMap(pox, poy, x_fin, y_fin);
+////			String ruta= Rutas.getRutaRandom(gc.getGrafo(), emap[0], emap[1]);
+////			System.out.println(emap[0]+"   "+emap[1]);
+////			moverCoche(ruta);
+//			
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
 //			}
 //			
-//		});
-
-//		SServiceProvider
-//				.getServices(agent.getServiceProvider(),
-//						IPositionService.class,
-//						RequiredServiceInfo.SCOPE_PLATFORM)
-//				.addResultListener(
-//						new DefaultResultListener<IPositionService>() {
+//		}
+//		
+////		agent.adoptPlan(new DetenersePlan(this));
+////		agent.adoptPlan(new AvanzarPlan(this, 10));
+////		agent.adoptPlan(new GirarDerechaPlan(this));
+////		agent.adoptPlan(new GirarIzquierdaPlan(this));
+//		//agent.adoptPlan(this.llegarDestino());
+//		
+////		System.out.println("Aqui");
+////		SServiceProvider.getServices(agent.getServiceProvider(), IEstadoAutoService.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IEstadoAutoService>>(){
+////
+////			public void resultAvailable(Collection<IEstadoAutoService> arg0) {
+////				System.out.println(arg0.size());
+////				for (Iterator<IEstadoAutoService> iterator = arg0.iterator(); iterator.hasNext();) {
+////			        EstadoAuto esa = iterator.next().getEstadoAuto().get();
+////			        System.out.println(esa.getPox()+"   "+esa.getPoy());
+////
+////			    }
+////				
+////			}
+////
+////			public void exceptionOccurred(Exception arg0) {
+////				// TODO Auto-generated method stub
+////				
+////			}
+////			
+////		});
 //
-//							@Override
-//							public void intermediateResultAvailable(
-//									IPositionService arg0) {
-//								System.out.println(arg0.avisoPos()
-//										.getFirstResult().getDir());
-//
-//							}
-//						});
-	}
+////		SServiceProvider
+////				.getServices(agent.getServiceProvider(),
+////						IPositionService.class,
+////						RequiredServiceInfo.SCOPE_PLATFORM)
+////				.addResultListener(
+////						new DefaultResultListener<IPositionService>() {
+////
+////							@Override
+////							public void intermediateResultAvailable(
+////									IPositionService arg0) {
+////								System.out.println(arg0.avisoPos()
+////										.getFirstResult().getDir());
+////
+////							}
+////						});
+//	}
 	
-	@Belief
-	public void setDireccion(int d){
-		direccion= d;
-	}
-	
-	@Belief
-	public int getDireccion(){
-		return direccion;
-	}
-
-	@Belief
-	public void setVMax(int v) {
-		v_max = v;
-	}
-
-	@Belief
-	public int getVelocidad() {
-		return velocidad;
-	}
-
-	@Belief
-	public void setVelocidad(int v) {
-		velocidad = v;
-	}
-
-	@Belief
-	public int getX() {
-		return pox;
-	}
-
-	@Belief
-	public void setX(int x) {
-		pox = x;
-	}
-
-	@Belief
-	public int getY() {
-		return poy;
-	}
-
-	@Belief
-	public void setY(int y) {
-		poy = y;
-	}
-
 	public IFuture<EstadoAuto> getEstadoAuto() {
 		return new Future<EstadoAuto>(ea);
 	}

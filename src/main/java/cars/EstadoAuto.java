@@ -1,15 +1,15 @@
 package cars;
 
 public class EstadoAuto {
-	private int velocidad;
+	private double velocidad;
 	private int direccion;
 	private boolean status;
-	private int pox;
-	private int poy;
-	private int xfin;
-	private int yfin;
+	private double pox;
+	private double poy;
+	private double xfin;
+	private double yfin;
 	
-	public EstadoAuto(int v, int d, int px, int py, int xf, int yf, boolean s){
+	public EstadoAuto(double v, int d, double px, double py, double xf, double yf, boolean s){
 		velocidad= v;
 		direccion= d;
 		pox= px;
@@ -27,27 +27,27 @@ public class EstadoAuto {
 		return status;
 	}
 	
-	public void setYFin(int y){
+	public void setYFin(double y){
 		yfin= y;
 	}
 	
-	public int getYFin(){
+	public double getYFin(){
 		return yfin;
 	}
 	
-	public void setXFin(int x){
+	public void setXFin(double x){
 		xfin= x;
 	}
 	
-	public int getXFin(){
+	public double getXFin(){
 		return xfin;
 	}
 	
-	public void setVel(int v){
+	public void setVel(double v){
 		velocidad= v;
 	}
 	
-	public int getVel(){
+	public double getVel(){
 		return velocidad;
 	}
 	
@@ -59,19 +59,19 @@ public class EstadoAuto {
 		return direccion;
 	}
 	
-	public void setPox(int p){
+	public void setPox(double p){
 		pox= p;
 	}
 	
-	public int getPox(){
+	public double getPox(){
 		return pox;
 	}
 	
-	public void setPoy(int p){
+	public void setPoy(double p){
 		poy= p;
 	}
 	
-	public int getPoy(){
+	public double getPoy(){
 		return poy;
 	}
 
