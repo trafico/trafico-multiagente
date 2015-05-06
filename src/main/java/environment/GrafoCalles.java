@@ -1,21 +1,37 @@
 package environment;
 
+import java.util.Random;
+
 public class GrafoCalles {
 	private int [][] grafo;
+	private int [][] uso;
 	private int [] velocidades;
 	private int numCalles;
 	private int numInt;
+	private Random randVel = new Random();
 	
 	public GrafoCalles(int [] vel){
 		velocidades= vel;
 		numCalles= velocidades.length;
 		numInt= (int)Math.pow(Math.sqrt(numCalles)/2,2);
 		grafo= new int[numInt][numInt];
+		uso= new int[numInt][numInt];
 		armarGrafo();
 	}
 	//Hacemos al grafo o mapa inicial para los coches..
 	public int [][] getGrafo(){
 		return grafo;
+	}
+	
+	public int getVeocidad(int fil, int col){
+		uso[fil][col] += 1;
+		if (uso[fil][col]>3){
+			uso[fil][col]=0;
+			grafo[fil][col] = (int)(randVel.nextDouble()*10);
+		}
+		int velocidad = grafo[fil][col];
+		
+		return velocidad;
 	}
 	
 	private void armarGrafo(){
@@ -28,6 +44,7 @@ public class GrafoCalles {
 		for (int i=0; i<numInt; i=i+1){
 			for (int j=0; j<numInt; j=j+1){
 				grafo[i][j]=0;
+				uso[i][j]=0;
 			}
 		}
 	}
