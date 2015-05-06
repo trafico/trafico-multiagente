@@ -172,24 +172,30 @@ public class posDisponible
 	}
 	
 	
-/*public static  void obtenerPosicion(){
+public static  IVector2 getPosicion(){
 		
+	IVector2 position = new Vector2Double();
+	coord[0] = new ArrayList<Double>();
+	coord[1] = new ArrayList<Double>();
+	
+	llenarLista();
+	//crearVectores();
+	
+	Random randCoord = new Random();
+	
+	
+	double x = coord[0].get((int)(randCoord.nextDouble()*coord[0].size()));
+	
+	double y = coord[1].get((int)(randCoord.nextDouble()*coord[1].size()));
+	
+	coord[0].clear();
+	coord[1].clear();
+	
+	position = new Vector2Double(x,y);
+	
 		
-		IVector2 position = Vector2Double.ZERO;
-
-		Random randCoord = new Random();
+	return position;
 		
-		position.add(pos[(int)(randCoord.nextDouble()*pos.length)]);
-		
-		
-		//position.randomX(distance.getX(), position.getX());
-		//position.randomY(distance.getY(), position.getY());
-		
-		System.out.println("position: "+position);
-		
-		coord[0].clear();
-		coord[1].clear();		
-		
-	}*/
+	}
 
 }

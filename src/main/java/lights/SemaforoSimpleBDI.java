@@ -26,6 +26,9 @@ import jadex.commons.future.IIntermediateResultListener;
 import jadex.commons.future.IResultListener;
 import jadex.commons.future.TerminableFuture;
 import jadex.commons.gui.future.SwingResultListener;
+import jadex.extension.envsupport.environment.ISpaceObject;
+import jadex.extension.envsupport.environment.space2d.Grid2D;
+import jadex.extension.envsupport.environment.space2d.Space2D;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.AgentCreated;
@@ -38,7 +41,6 @@ import jadex.micro.annotation.RequiredServices;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.Binding;
 import jadex.bridge.service.RequiredServiceInfo;
-
 
 
 @Description("Semaforo no tiene comunicacion. <br> Tiene un temporizador.")
@@ -103,12 +105,19 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 	@Belief
 	protected int carrosQuePasaron;
 	
-
+	/** The environment. */
+	protected Grid2D env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
+	
+	/** The environment. */
+	protected ISpaceObject myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+	
+	
 
 	@AgentCreated
 	public void init()
 	{
 		System.out.println("Created: "+this);
+		
 		this.posX= (Integer) agent.getArgument("posX");
 		this.posY = (Integer) agent.getArgument("posY");
 		this.lineaActual = 1; //Comienza siempre en norte
@@ -117,7 +126,10 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 		this.traficoEste = 0;
 		this.traficoOeste = 0;
 		this.segundosTranscurridos = 0;
-
+		System.out.println("Hola "+myself);
+		myself.setProperty("lineaActual",1);
+		System.out.println("Hola vitcor ÑO");
+		
 	}
 
 	/**
@@ -263,6 +275,7 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 			
 			
 				});*/
+		myself.setProperty("lineaActual",lineaActual);
 	}
 
 	@AgentBody
