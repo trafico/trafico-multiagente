@@ -5,7 +5,10 @@ package cars;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
+import environment.GrafoCalles;
+import environment.posDisponible;
 import jadex.bdiv3.BDIAgent;
 import jadex.bdiv3.annotation.Belief;
 import jadex.bdiv3.annotation.Body;
@@ -27,27 +30,39 @@ import jadex.commons.future.Tuple2Future;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.AgentCreated;
+import jadex.micro.annotation.Argument;
+import jadex.micro.annotation.Arguments;
 import jadex.micro.annotation.Implementation;
 import jadex.micro.annotation.ProvidedService;
 import jadex.micro.annotation.ProvidedServices;
 import jadex.micro.annotation.RequiredService;
 import jadex.micro.annotation.RequiredServices;
 import lights.IEstadoSemaforoService;
+import lights.IPosicionSemaforo;
+import lights.PosicionSemaforo;
 
 @Agent
 @Service
 @ProvidedServices(@ProvidedService(type=IEstadoAutoService.class))
 @RequiredServices
 ({
-//	@RequiredService(type=IPosicionSemaforo.class, name = "estadoSemaforo"),
+	@RequiredService(type=IPosicionSemaforo.class, name = "estadoSemaforo"),
 	@RequiredService(type=IEstadoAutoService.class, name = "estadoAutos")
 })
+
+
+@Arguments({
+	  @Argument(name="pxin", clazz=Integer.class, defaultvalue="0"),
+	  @Argument(name="pyin", clazz=Integer.class, defaultvalue="0"),
+	  @Argument(name="map", clazz=GrafoCalles.class, defaultvalue="null"),
+	  @Argument(name= "goalx", clazz=Integer.class, defaultvalue="0"),
+	  @Argument(name= "goaly", clazz= Integer.class, defaultvalue="0"),
+	  @Argument(name= "intel", clazz= Boolean.class, defaultvalue="false"),
+	  @Argument(name= "ruta", clazz= String.class, defaultvalue= "random")
+	})
+
 @Plans({@Plan(body=@Body(DestinoPlan.class))})
 public class SimpleCarBDI implements IEstadoAutoService {
-	@Belief
-	private int x_ini;
-	@Belief
-	private int y_ini;
 	@Belief
 	private int x_fin;
 	@Belief
@@ -63,37 +78,78 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	@Belief
 	private boolean status= true;
 	@Belief
-	private int direccion; //0:Norte, 1:Este, 2:Sur, 3:Oeste.
+	private int direccion; //1:Norte, 2:Este, 3:Sur, 4:Oeste.
 	@Belief
 	private EstadoAuto ea;
+	@Belief
+	private boolean intel;
+	@Belief
+	private GrafoCalles gc;
+	@Belief
+	private String tipoRuta;
+	@Belief
+	private PosicionSemaforo ps;
 
 	@Agent
 	BDIAgent agent;
 
 	public SimpleCarBDI() {
-		x_ini = 0;
-		y_ini = 0;
-		x_fin = 0;
-		y_fin = 0;
-		pox = x_ini;
-		poy = y_ini;
-		direccion=0;
-		ea= new EstadoAuto(velocidad, direccion, pox, poy, x_fin, y_fin, status);
+		
 	}
+	
+	public PosicionSemaforo isSemaforo(int px, int py){
+		ps=null;
+		SServiceProvider.getServices(agent.getServiceProvider(), IPosicionSemaforo.class, RequiredServiceInfo.SCOPE_PLATFORM).addResultListener(new IResultListener <Collection<IPosicionSemaforo>>(){
 
-	// public SimpleCarBDI(int x, int y, int x2, int y2, int d){
-	// x_ini= x;
-	// y_ini= y;
-	// x_fin= x2;
-	// y_fin= y2;
-	// pox= x_ini;
-	// poy= y_ini;
-	// direccion= d;
-	// }
+			public void exceptionOccurred(Exception arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void resultAvailable(Collection<IPosicionSemaforo> arg0) {
+				// TODO Auto-generated method stub
+				for (Iterator<IPosicionSemaforo> iterator = arg0.iterator(); iterator.hasNext();) {
+			        PosicionSemaforo psm = iterator.next().getPosicionSemaforo().get();
+			        if(Math.sqrt(Math.pow(psm.getPosX()-pox, 2)+Math.pow(psm.getPosY()-poy, 2))<=1.5)
+			        	ps= psm;
+
+			    }
+			}
+		});
+		return ps;
+		}
 	
 	@AgentCreated
-	public void init(){
-		
+	public void init()
+	{
+		this.pox= (Integer) agent.getArgument("pxin");
+		this.poy= (Integer) agent.getArgument("pyin");
+		this.x_fin= (Integer) agent.getArgument("goalx");
+		this.y_fin= (Integer) agent.getArgument("goaly");
+		this.tipoRuta= (String) agent.getArgument("ruta");
+		this.gc= (GrafoCalles) agent.getArgument("map");
+		this.status= true;
+		this.direccion= 1;
+		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
+	}
+	
+	@Plan(trigger=@Trigger(factchangeds={"pox", "poy", "x_fin", "y_fin","status","direccion","velocidad"}))
+	public void actualizarEstado(){
+		ea.setPox(pox);
+		ea.setPoy(poy);
+		ea.setDir(direccion);
+		ea.setStatus(status);
+		ea.setVel(velocidad);
+		ea.setXFin(x_fin);
+		ea.setYFin(y_fin);
+		System.out.println("Se actualizaron los datos");
+	}
+	
+	@Plan
+	public void llegarDestino(){
+		while (true){
+			
+		}
 	}
 
 	@AgentBody
