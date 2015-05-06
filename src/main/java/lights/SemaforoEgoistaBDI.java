@@ -36,7 +36,7 @@ import jadex.bridge.service.RequiredServiceInfo;
 
 
 
-@Description("Semaforo no tiene comunicacion. <br> Tiene un temporizador.")
+@Description("Semaforo ego’sta. <br> Tiene un temporizador, comunicaci—n con vecinos y toma de decisiones en base a su tr‡fico local.")
 @Agent
 @Service
 @ProvidedServices( {@ProvidedService(type=IPosicionSemaforo.class),@ProvidedService(type=ITraficoService.class) })
