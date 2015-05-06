@@ -4,18 +4,20 @@ import java.util.Random;
 
 public class GrafoCalles {
 	private int [][] grafo;
-	private int [][] uso;
+	private boolean [][] disponibilidad;
 	private int [] velocidades;
 	private int numCalles;
+	private int callesCerradas;
 	private int numInt;
-	private Random randVel = new Random();
+	private int contador = 0;
+	private Random randNum = new Random();
 	
 	public GrafoCalles(int [] vel){
 		velocidades= vel;
 		numCalles= velocidades.length;
 		numInt= (int)Math.pow(Math.sqrt(numCalles)/2,2);
 		grafo= new int[numInt][numInt];
-		uso= new int[numInt][numInt];
+		disponibilidad= new boolean[numInt][numInt];
 		armarGrafo();
 	}
 	//Hacemos al grafo o mapa inicial para los coches..
@@ -23,19 +25,24 @@ public class GrafoCalles {
 		return grafo;
 	}
 	
-	public int getVeocidad(int fil, int col){
-		uso[fil][col] += 1;
-		if (uso[fil][col]>3){
-			uso[fil][col]=0;
-			grafo[fil][col] = (int)(randVel.nextDouble()*10);
+	public boolean estaDisponible (int fil, int col){
+		contador += 1;
+		if (contador > 5){
+			llenarDisponibles();
+			contador = 0;
+			callesCerradas = (int)(randNum.nextDouble()*8);
+			for (int i=0; i<callesCerradas; i++){
+				disponibilidad[(int)(randNum.nextDouble()*numInt)][(int)(randNum.nextDouble()*numInt)] = false;
+			}		
 		}
-		int velocidad = grafo[fil][col];
-		
-		return velocidad;
+		boolean disponible = disponibilidad[fil][col];
+
+		return disponible;	
 	}
 	
 	private void armarGrafo(){
 		llenarCeros();
+		llenarDisponibles();
 		armarNorteSur();
 		armarEsteOeste();
 	}
@@ -44,7 +51,14 @@ public class GrafoCalles {
 		for (int i=0; i<numInt; i=i+1){
 			for (int j=0; j<numInt; j=j+1){
 				grafo[i][j]=0;
-				uso[i][j]=0;
+			}
+		}
+	}
+	
+	private void llenarDisponibles(){
+		for (int i=0; i<numInt; i=i+1){
+			for (int j=0; j<numInt; j=j+1){
+				disponibilidad[i][j]=true;
 			}
 		}
 	}
