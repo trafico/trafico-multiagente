@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<applicationtype xmlns="http://jadex.sourceforge.net/jadex"
+	xmlns:env="http://jadex.sourceforge.net/jadex-envspace"
+	
+	name="Ambientito" package="environment">
+	
+<imports>
+		<import>jadex.bridge.IComponentIdentifier</import>
+		<import>jadex.extension.envsupport.environment.*</import>
+		<import>jadex.extension.envsupport.environment.space2d.*</import>
+		<import>jadex.extension.envsupport.environment.RoundBasedExecutor</import>
+		<import>jadex.extension.envsupport.math.*</import>
+		<import>jadex.commons.SFunction</import>
+		<import>jadex.extension.envsupport.observer.gui.plugin.*</import>
+		<import>jadex.bridge.service.clock.IClockService</import>
+		<import>jadex.extension.envsupport.dataview.*</import>
+		<import>jadex.extension.envsupport.observer.perspective.*</import>
+		<import>jadex.bdi.planlib.*</import>
+		<import>environment.*</import>
+		<import>cars.*</import>
+		<import>lights.*</import>
+	</imports>
+<extensiontypes>
+
+<!-- Declaration of a grid environment as space type. ....-->
+<env:envspacetype name="tm2dspace2" width="50" height="50" class="Grid2D">
+
+
+		<!-- Declaracion de objetos que estarán en el ambiente -->
+		<env:objecttype name="automovil">
+					<env:property name="vision_range">2</env:property>
+					<env:property name="position" event="true"/>
+					<env:property name="velocidad" event="true"/>
+		</env:objecttype>
+		
+		<env:objecttype name="semaforo">
+					<env:property name="vision_range">4</env:property>
+					<env:property name="position" event="true"/>
+					<env:property name="lineaActual" class="int">0</env:property>
+		</env:objecttype>
+		<env:objecttype name="calleHE">
+					<env:property name="velocidad">10</env:property>
+					<env:property name="position"/>
+		</env:objecttype>
+		<env:objecttype name="calleHO">
+					<env:property name="velocidad">10</env:property>
+					<env:property name="position"/>
+		</env:objecttype>
+		<env:objecttype name="calleVN">
+					<env:property name="velocidad">10</env:property>
+					<env:property name="position"/>
+		</env:objecttype>
+		<env:objecttype name="calleVS">
+					<env:property name="velocidad">10</env:property>
+					<env:property name="position"/>
+		</env:objecttype>
+		<env:objecttype name="objetivo">
+					<env:property name="position"/>
+		</env:objecttype>
+		<env:objecttype name="cuadra">
+		<!-- Sin propiedades, es para crear los obstáculos -->
+		</env:objecttype>
+		
+		<env:tasktypes>
+				<env:tasktype name="move" class="MoveTask" />		
+		</env:tasktypes>
+		
+	    <env:processtypes>
+			<env:processtype name="crearObjetivo" class="DefaultObjectCreationProcess">
+				<env:property name="timerate">5000</env:property>
+				<env:property name="type">"objetivo"</env:property>
+				<env:property name="properties" dynamic="true">
+						posDisponible.obtenerPosicion()   
+				</env:property>
+			</env:processtype>
+		</env:processtypes> 
+		
+		
+		<env:dataviews>
+				<env:dataview name="view_all" class="GeneralDataView2D" />
+				<env:dataview name="semaforo_view" class="LocalDataView2D" objecttype="semaforo">
+					<env:property name="object">$object</env:property>
+					<env:property name="range">$object.vision_range</env:property>
+				</env:dataview>
+				<env:dataview name="auto_view" class="LocalDataView2D" objecttype="automovil">
+					<env:property name="object">$object</env:property>
+					<env:property name="range">$object.vision_range</env:property>
+				</env:dataview>						
+		</env:dataviews>
+					
+		<env:avatarmappings>
+				<env:avatarmapping componenttype="Automovil" objecttype="automovil" createcomponent="true"/>
+				<env:avatarmapping componenttype="Semaforo" objecttype="semaforo" createcomponent="true" />
+		</env:avatarmappings>
+		
+		<env:perspectives>
+				<env:perspective name="icons" class="Perspective2D" >	
+						<env:drawable objecttype="cuadra" width="1" height="1">
+								<env:texturedrectangle layer="-1" height="8" width="8" imagepath="src/main/java/environment/imagenes/cuadra.png"/>
+						</env:drawable>	
+						<env:drawable objecttype="calleHE" width="1" height="1">
+								<env:texturedrectangle layer="-1" height="1" width="8" imagepath="src/main/java/environment/imagenes/calleHE.png"/>
+						</env:drawable>	
+						<env:drawable objecttype="calleHO" width="1" height="1">
+								<env:texturedrectangle layer="-1" height="1" width="8" imagepath="src/main/java/environment/imagenes/calleHO.png"/>
+						</env:drawable>	
+						<env:drawable objecttype="calleVN" width="1" height="1">
+								<env:texturedrectangle layer="-1" height="8" width="1" imagepath="src/main/java/environment/imagenes/calleVN.png"/>
+						</env:drawable>
+						<env:drawable objecttype="calleVS" width="1" height="1">
+								<env:texturedrectangle layer="-1" height="8" width="1" imagepath="src/main/java/environment/imagenes/calleVS.png"/>
+						</env:drawable>
+						<env:drawable objecttype="automovil" width="1" height="1" >
+								<!--<env:property name="vision_size" dynamic="true">new Vector2Double($object.vision_range*2+1)</env:property>-->
+								<env:texturedrectangle layer="1" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito.png"/>
+								<!--<env:rectangle layer="0" size="vision_size" color="#ffff007f" />-->
+						</env:drawable>
+						<env:drawable objecttype="semaforo" width="1" height="1" >
+								<!--<env:property name="vision_size" dynamic="true">new Vector2Double($object.vision_range*2+1)</env:property>-->
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png">
+									<env:drawcondition>$object.getProperty("lineaActual")==0</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde2.png">
+									<env:drawcondition>$object.getProperty("lineaActual")==1</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde4.png">
+									<env:drawcondition>$object.getProperty("lineaActual")==2</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde1.png">
+									<env:drawcondition>$object.getProperty("lineaActual")==3</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="2" width="2" imagepath="src/main/java/environment/imagenes/verde3.png">
+									<env:drawcondition>$object.getProperty("lineaActual")==4</env:drawcondition>
+								</env:texturedrectangle>
+								<!--<env:rectangle layer="0" size="vision_size" color="#ffff007f" />-->
+						</env:drawable>
+						<env:drawable objecttype="objetivo" width="1" height="1" >
+								<env:texturedrectangle layer="2" height="1.2" width="1.2" imagepath="src/main/java/environment/imagenes/objetivo.png"/>
+						</env:drawable>
+						<env:prelayers>
+								<!-- <env:tiledlayer width="1.0" height="1.0" imagepath="src/main/java/environment/imagenes/calle.png" /> -->
+								<env:gridlayer width="1.0" height="1.0" color="black" />
+						</env:prelayers>
+				</env:perspective>
+		</env:perspectives>
+		
+<!-- A space executor defines the space execution policy (e.g. roundbased vs. continuous). -->
+			<env:spaceexecutor class="RoundBasedExecutor">
+				<env:property name="space">$space</env:property>
+				<env:property name="execution_monitoring">true</env:property>
+			</env:spaceexecutor>
+</env:envspacetype>
+	
+</extensiontypes>
+
+	<componenttypes>
+		<componenttype name="Automovil" filename="src/main/java/cars/SimpleCarBDI.agent.xml"/>
+		<componenttype name="Semaforo" filename="src/main/java/lights/SemaforoSimpleBDI.class"/>
+		<componenttype name="Semaforo1" filename="src/main/java/lights/SemaforoSimpleBDI.class"/>
+	</componenttypes>
+
+<configurations>
+		<configuration name="default">
+			<extensions>
+				 <env:envspace name="my2dspace2" type="tm2dspace2"  >
+					<env:objects>
+						<!-- Firestation with 3 brigades -->
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 6)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 6)</env:property>
+						</env:object>
+							<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 16)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 26)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 36)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 46)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(6, 56)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(16, 56)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(26, 56)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(36, 56)</env:property>
+						</env:object>
+						<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(46, 56)</env:property>
+						</env:object>
+							<env:object type="cuadra">
+							<env:property name="position">new Vector2Double(56, 56)</env:property>
+						</env:object>
+							
+						
+						
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(2, 1.5)</env:property>
+						</env:object>
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(6, 11.5)</env:property>
+						</env:object>
+						<env:object type="automovil" >
+							<env:property name="position">new Vector2Double(15, 21.5)</env:property>
+						
+						
+							
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 1)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 1)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 1)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 1)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 1)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 1)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 11)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 11)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 11)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 11)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 11)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 11)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 21)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 21)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 21)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 21)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 21)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 21)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 31)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 31)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 31)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 31)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 31)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 31)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 41)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 41)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 41)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 41)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 41)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 41)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(1, 51)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(11, 51)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(21, 51)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(31, 51)</env:property>
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(41, 51)</env:property>	
+						</env:object>
+						<env:object type="semaforo" >
+							<env:property name="position">new Vector2Double(51, 51)</env:property>
+						</env:object>
+						
+						
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 1.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 11.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 21.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 31.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 41.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(6, 51.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(16, 51.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(26, 51.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(36, 51.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(46, 51.5)</env:property>
+						</env:object>
+						<env:object type="calleHE" >
+							<env:property name="position">new Vector2Double(56, 51.5)</env:property>
+						</env:object>
+						
+						
+						
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 0.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 10.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 20.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 30.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 40.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(6, 50.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(16, 50.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(26, 50.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(36, 50.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(46, 50.5)</env:property>
+						</env:object>
+						<env:object type="calleHO" >
+							<env:property name="position">new Vector2Double(56, 50.5)</env:property>
+						</env:object>
+						
+						
+						
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(1.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(11.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(21.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(31.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(41.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVN" >
+							<env:property name="position">new Vector2Double(51.5, 56)</env:property>
+						</env:object>									
+										
+										
+										
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 6)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 6)</env:property>
+						</env:object>
+						 <env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 16)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 26)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 36)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 46)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(0.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(10.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(20.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(30.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(40.5, 56)</env:property>
+						</env:object>
+						<env:object type="calleVS" >
+							<env:property name="position">new Vector2Double(50.5, 56)</env:property>
+						</env:object>
+						
+										
+					</env:objects> 
+					
+					 <env:processes>
+						<env:process type="crearObjetivo">
+						</env:process>
+					</env:processes>  
+					
+					<env:observers>
+						<env:observer name="world" dataview="view_all" perspective="icons"/>
+					</env:observers>
+					
+				</env:envspace>
+			</extensions>
+			
+			<!-- <components>
+				<component type="automovil" number="5"/>
+				<component type="semaforo" number="10" />
+			</components> -->
+			
+		</configuration>
+</configurations>	
+
+</applicationtype>
