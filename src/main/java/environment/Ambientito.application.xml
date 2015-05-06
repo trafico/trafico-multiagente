@@ -31,7 +31,7 @@
 		<!-- Declaracion de objetos que estarán en el ambiente -->
 		<env:objecttype name="automovil">
 					<env:property name="vision_range">2</env:property>
-					<env:property name="position" event="true"/>
+					<env:property name="position"></env:property>
 					<env:property name="velocidad" event="true"/>
 		</env:objecttype>
 		
@@ -192,7 +192,7 @@
 </extensiontypes>
 
 	<componenttypes>
-		<componenttype name="Automovil" filename="src/main/java/cars/SimpleCarBDI.agent.xml"/>
+		<componenttype name="Automovil" filename="src/main/java/cars/SimpleCarBDI.class"/>
 		<componenttype name="Semaforo" filename="src/main/java/lights/SemaforoSimpleBDI.class"/>
 		<componenttype name="Semaforo1" filename="src/main/java/lights/SemaforoSimpleBDI.class"/>
 	</componenttypes>
