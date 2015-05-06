@@ -1,5 +1,7 @@
 package environment;
 
+import jadex.extension.envsupport.math.IVector2;
+
 import java.util.Random;
 
 public class GrafoCalles {
@@ -39,6 +41,25 @@ public class GrafoCalles {
 
 		return disponible;	
 	}
+	
+	
+	/*public boolean estaDisponiblePos (IVector2 pos, int sentido){
+		int x=pos.getXAsInteger();
+		int y=pos.getYAsInteger();
+		int tamaño = (int)Math.sqrt(numInt);
+		
+		if (sentido == 1){
+		//fil = 
+		}
+		else{
+			
+		}
+		
+		boolean disponible = disponibilidad[fil][col];
+
+		return disponible;	
+	}*/
+	
 	
 	private void armarGrafo(){
 		llenarCeros();

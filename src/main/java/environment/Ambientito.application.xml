@@ -42,6 +42,9 @@
 		</env:objecttype>
 		<env:objecttype name="calleHE">
 					<env:property name="velocidad">10</env:property>
+					<env:property name="disponible" dynamic=true>
+					
+					</env:property>
 					<env:property name="position"/>
 		</env:objecttype>
 		<env:objecttype name="calleHO">
@@ -321,11 +324,12 @@
 							<env:property name="position">new Vector2Double(6, 11.5)</env:property>
 						</env:object>
 						<env:object type="automovil" >
-							<env:property name="position">new Vector2Double(15, 21.5)</env:property>
-						
-						
-							
+							<env:property name="position">new Vector2Double(15, 21.5)</env:property> 	
 						</env:object>
+						
+						
+						
+						
 						<env:object type="semaforo" >
 							<env:property name="position">new Vector2Double(1, 1)</env:property>
 						</env:object>
