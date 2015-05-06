@@ -29,7 +29,6 @@ import jadex.commons.gui.future.SwingResultListener;
 import jadex.extension.envsupport.environment.ISpaceObject;
 import jadex.extension.envsupport.environment.space2d.Grid2D;
 import jadex.extension.envsupport.environment.space2d.Space2D;
-import jadex.extension.envsupport.math.IVector2;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.AgentCreated;
@@ -107,11 +106,9 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 	protected int carrosQuePasaron;
 	
 	/** The environment. */
-	@Belief
 	protected Grid2D env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
 	
 	/** The environment. */
-	@Belief
 	protected ISpaceObject myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
 	
 	
@@ -120,18 +117,18 @@ public class SemaforoSimpleBDI implements IPosicionSemaforo, ITraficoService {
 	public void init()
 	{
 		System.out.println("Created: "+this);
-		IVector2 miPosAmbiente = (IVector2) myself.getProperty("position");
-		this.posX= miPosAmbiente.getXAsInteger();//(Integer) agent.getArgument("posX");
-		this.posY = miPosAmbiente.getYAsInteger();//(Integer) agent.getArgument("posY");
+		
+		this.posX= (Integer) agent.getArgument("posX");
+		this.posY = (Integer) agent.getArgument("posY");
 		this.lineaActual = 1; //Comienza siempre en norte
 		this.traficoNorte = 0;
 		this.traficoSur = 0;
 		this.traficoEste = 0;
 		this.traficoOeste = 0;
 		this.segundosTranscurridos = 0;
-		//System.out.println("Hola "+myself);
+		System.out.println("Hola "+myself);
 		myself.setProperty("lineaActual",1);
-		System.out.println("Posicion:"+posX+","+posY);
+		System.out.println("Hola vitcor ÑO");
 		
 	}
 
