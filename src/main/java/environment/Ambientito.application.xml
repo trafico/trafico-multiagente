@@ -845,10 +845,10 @@
 										
 					</env:objects> 
 					
-					 <env:processes>
+					 <!-- <env:processes>
 						<env:process type="crearObjetivo">
 						</env:process>
-					</env:processes>  
+					</env:processes>   -->
 					
 					<env:observers>
 						<env:observer name="world" dataview="view_all" perspective="icons"/>
