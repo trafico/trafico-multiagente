@@ -27,6 +27,7 @@ import jadex.commons.future.IResultListener;
 import jadex.commons.future.ITuple2Future;
 import jadex.commons.future.IntermediateDefaultResultListener;
 import jadex.commons.future.Tuple2Future;
+import jadex.extension.envsupport.math.IVector2;
 import jadex.micro.annotation.Agent;
 import jadex.micro.annotation.AgentBody;
 import jadex.micro.annotation.AgentCreated;
@@ -147,9 +148,44 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	
 	@Plan
 	public void llegarDestino(){
+		IVector2 posi= posDisponible.getPosicion();
+		pox= posi.getXAsInteger();
+		poy= posi.getYAsInteger();
 		while (true){
 			
+			IVector2 posifin= posDisponible.getPosicion();
+			x_fin= posifin.getXAsInteger();
+			y_fin= posifin.getYAsInteger();
+			int [] emap= equivMap(pox, poy, x_fin, y_fin);
+			String ruta= Rutas.getRutaRandom(gc.getGrafo(), emap[0], emap[1]);
+			System.out.println(emap[0]+"   "+emap[1]);
+			moverCoche(ruta);
 		}
+	}
+	
+	public void moverCoche(String ruta){
+		String [] tokens= ruta.split(ruta);
+		
+	}
+	
+	public int[] equivMap(int x1, int y1, int x2, int y2){
+		int [] emap= new int[2];
+		int nx1= (x1-1)/10;
+		int ny1= (y1-1)/10;
+		int nx2= (x2-1)/10;
+		int ny2= (y2-1)/10;
+		int tam= (int)Math.sqrt(gc.getGrafo().length);
+		int [][] mapa2= new int[tam][tam];
+		int cont=0;
+		for(int i=0; i<tam; i=i+1){
+			for(int j=0; j<tam; j=j+1){
+				mapa2[i][j]=cont;
+				cont=cont+1;
+			}
+		}
+		emap[0]= mapa2[nx1][ny1];
+		emap[1]= mapa2[nx2][ny2];
+		return emap;
 	}
 
 	@AgentBody
