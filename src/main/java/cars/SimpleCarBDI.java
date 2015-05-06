@@ -56,11 +56,11 @@ import lights.PosicionSemaforo;
 
 
 @Arguments({
-	  @Argument(name="pxin", clazz=Double.class, defaultvalue="0"),
-	  @Argument(name="pyin", clazz=Double.class, defaultvalue="0"),
+	  @Argument(name="pxin", clazz=Double.class, defaultvalue="0.0"),
+	  @Argument(name="pyin", clazz=Double.class, defaultvalue="0.0"),
 	  @Argument(name="map", clazz=GrafoCalles.class, defaultvalue="null"),
-	  @Argument(name= "goalx", clazz=Double.class, defaultvalue="0"),
-	  @Argument(name= "goaly", clazz= Double.class, defaultvalue="0"),
+	  @Argument(name= "goalx", clazz=Double.class, defaultvalue="0.0"),
+	  @Argument(name= "goaly", clazz= Double.class, defaultvalue="0.0"),
 	  @Argument(name= "intel", clazz= Boolean.class, defaultvalue="false"),
 	  @Argument(name= "ruta", clazz= String.class, defaultvalue= "random")
 	})
@@ -101,7 +101,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 
 	protected Grid2D env;
 	protected ISpaceObject myself;
-	protected Vector2Double area;
+	protected IVector2 area;
 	
 	public SimpleCarBDI() {
 		
@@ -109,9 +109,10 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	
 	@AgentCreated
 	public void init(){
+//		System.out.println("Aquí");
 		this.pox= (Double) agent.getArgument("pxin");
 		this.poy= (Double) agent.getArgument("pyin");
-		obtenerPos();
+		
 		this.x_fin= (Double) agent.getArgument("goalx");
 		this.y_fin= (Double) agent.getArgument("goaly");
 		this.tipoRuta= (String) agent.getArgument("ruta");
@@ -119,13 +120,16 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		this.status= true;
 		this.direccion= 1;
 		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
-		area= (Vector2Double) env.getAreaSize();
+		
 		env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
 		myself = env.getAvatar(agent.getComponentDescription(), agent.getModel().getFullName());
+		area= (IVector2) env.getAreaSize();
+//		System.out.println("Aquí...");
 	}
 	
 	private void obtenerPos(){
 		IVector2 mypos= (IVector2)myself.getProperty("position");
+//		System.out.println("Aquí");
 		pox= mypos.getXAsDouble();
 		poy= mypos.getYAsDouble();
 	}
@@ -161,9 +165,8 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		ea.setVel(velocidad);
 		ea.setXFin(x_fin);
 		ea.setYFin(y_fin);
-		Vector2Double v2= new Vector2Double(pox, poy);
+		IVector2 v2= (IVector2)new Vector2Double(pox, poy);
 		myself.setProperty("position", v2);
-		System.out.println("Se actualizaron los datos");
 	}
 	
 	public void moverCoche(String ruta){
@@ -227,8 +230,11 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	
 	@AgentBody
 	public void body(){
+		obtenerPos();
 		while(true){
 			pox= pox+1;
+			actualizarEstado();
+			System.out.println(pox);
 			try {
 				Thread.sleep(600);
 			} catch (InterruptedException e) {
