@@ -315,13 +315,13 @@
 						
 						
 						<env:object type="automovil" >
-							<env:property name="position">new Vector2Double(2, 1.5)</env:property>
+							<env:property name="position">new Vector2Double(11, 21)</env:property>
 						</env:object>
 						<env:object type="automovil" >
-							<env:property name="position">new Vector2Double(6, 11.5)</env:property>
+							<env:property name="position">new Vector2Double(21, 1)</env:property>
 						</env:object>
 						<env:object type="automovil" >
-							<env:property name="position">new Vector2Double(15, 21.5)</env:property> 	
+							<env:property name="position">new Vector2Double(1, 11)</env:property> 	
 						</env:object>
 						
 						
