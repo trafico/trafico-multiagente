@@ -1,5 +1,6 @@
 package cars;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Rutas {
 	
@@ -68,7 +69,7 @@ public class Rutas {
 		}
 		return devolverRuta(mapa, cam);
 	}
-	
+	/*
 	public static void getRutaDijstra(int mapa[][], int orig, int dest){
 		boolean [] definitivos= iniciarDef(mapa.length);
 		ArrayList<int[]> pasos= new ArrayList<int[]>();
@@ -118,8 +119,60 @@ public class Rutas {
 			}
 			disacum=disacum+dist[def];
 		}
-	}
+	}*/
+        
+        public static String getRutaDijstra(int mapa[][], int orig, int dest){
+          //Nuevo metodo
+            Grafo g= new Grafo();
+            leerMatriz(mapa,g);
+            
+            g.djisktra(orig);
+            
+            for (Vertice v : g.Vertices)
+           {
+               if(v.id == dest) {
+                   //Cambiar a string para devolverRuta
+                    List<Vertice> path = g.camino(v);
+                    int[] cam = new int[path.size()];                    
+                    for(int i = 0; i < path.size(); i++) cam[i] = path.get(i).id;
+                    return devolverRuta(mapa, cam);
+                    //System.out.println ("Camino de "+g.Vertices.get(orig).etiqueta +" a "+g.Vertices.get(dest).etiqueta+" : "+ path);
+               }              
+           }
+            return "Error: El  origen o destino no existe en el grafo.";
+        }
 	
+        //Este metodo convierte la matriz de distancia a un Grafo
+        private static void leerMatriz(int[][] matriz, Grafo g){
+            for(int i=0; i< matriz.length; i++){
+                //Cada fila es un vertice
+                //Su ID y nombre sera el numero de vertice empezando por 0
+                //Al ser una matriz cuadrada solo se necesita una medida para
+                //obtener el numero total de vertices
+                g.addVertice(new Vertice(""+i,i)); 
+            }
+            
+            for (int row=0; row < matriz.length; row++){                              
+                for (int col=0; col < matriz[row].length; col++){
+                    int value = matriz[row][col];
+                    //Djisktra no acepta numeros negativos
+                    //Un valor de 0 indica que no hay arista
+                    if(!(value<=0)){
+                        try {
+                            //El inicio es el id de la fila
+                            //El final es el id de la columna
+                            //Es el valor es el guardado en esa posicion
+                            g.addArista((row), (col), value);
+                        } catch (Exception ex) {
+                           System.out.println(ex.getMessage());
+                        }
+                    }
+                    
+                    
+                }
+            }
+        }
+        
 	public static void imprimirPaso(int [] mat){
 		for (int i=0; i<mat.length; i=i+1){
 			System.out.print(mat[i]+"   ");
