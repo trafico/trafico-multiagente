@@ -119,7 +119,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		this.y_fin= (Double) agent.getArgument("goaly");
 		this.tipoRuta= (String) agent.getArgument("ruta");
 		this.status= true;
-		this.direccion= 1;
+//		this.direccion= 1;
 		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
 		
 		env = (Grid2D)agent.getParentAccess().getExtension("my2dspace2").get();
@@ -132,6 +132,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 //		IVector2 mypos=posDisponible.getPosicion();
 //		myself.setProperty("position", mypos);
 		IVector2 mypos= (IVector2)myself.getProperty("position");
+		this.direccion= (Integer) myself.getProperty("direccion");
 //		System.out.println("Aquí");
 		pox= mypos.getXAsDouble();
 		poy= mypos.getYAsDouble();
@@ -172,6 +173,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		ea.setYFin(y_fin);
 		IVector2 v2= (IVector2)new Vector2Double(pox, poy);
 		myself.setProperty("position", v2);
+		myself.setProperty("direccion", direccion);
 	}
 	
 	public void moverCoche(String ruta){
@@ -179,12 +181,12 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		
 	}
 	
-	private int[] equivMap(int x1, int y1, int x2, int y2){
+	private int[] equivMap(double x1, double y1, double x2, double y2){
 		int [] emap= new int[2];
-		int nx1= (x1-1)/10;
-		int ny1= (y1-1)/10;
-		int nx2= (x2-1)/10;
-		int ny2= (y2-1)/10;
+		int nx1= (int)(x1-1)/10;
+		int ny1= (int)(y1-1)/10;
+		int nx2= (int)(x2-1)/10;
+		int ny2= (int)(y2-1)/10;
 		int tam= (int)Math.sqrt(gc.length);
 		int [][] mapa2= new int[tam][tam];
 		int cont=0;
@@ -194,8 +196,8 @@ public class SimpleCarBDI implements IEstadoAutoService {
 				cont=cont+1;
 			}
 		}
-		emap[0]= mapa2[nx1][ny1];
-		emap[1]= mapa2[nx2][ny2];
+		emap[0]= mapa2[(int)nx1][(int)ny1];
+		emap[1]= mapa2[(int)nx2][(int)ny2];
 		return emap;
 	}
 	
@@ -304,23 +306,35 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	public void body(){
 		obtenerPos();
 		crearMapa();
-		calcularRuta(gc, 0, 5);
+//		calcularRuta(gc, 0, 5);
 		
-		for(int i=0; i<ruta.length; i=i+1){
-			System.out.print(ruta[i]+"  ");
-		}
+//		for(int i=0; i<ruta.length; i=i+1){
+//			System.out.print(ruta[i]+"  ");
+//		}
 		
-		int [] camino={2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2};
+//		int [] camino={2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2};
 		while(true){
-			for(int i=0; i<camino.length; i=i+1){
-				moverSig(camino[i]);
+			IVector2 goal=posDisponible.getPosicion();
+			this.x_fin= goal.getXAsDouble();
+			this.y_fin= goal.getYAsDouble();
+			
+			int [] puntos= this.equivMap(pox, poy, x_fin, y_fin);
+			calcularRuta(gc,puntos[0], puntos[1]);
+			int [] r2= convertirRuta(ruta); 
+			
+			int paso=0;
+			while(pox!=x_fin && poy!=y_fin){
+				if(moverSig(r2[paso]))
+					paso=paso+1;
 				try {
-					Thread.sleep(600);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+			
+			
 //			System.out.println(pox);
 		}
 	}
