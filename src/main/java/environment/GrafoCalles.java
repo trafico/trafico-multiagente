@@ -5,29 +5,36 @@ import jadex.extension.envsupport.math.IVector2;
 import java.util.Random;
 
 public class GrafoCalles {
-	private int [][] grafo;
-	private boolean [][] disponibilidad;
-	private int [] velocidades;
-	private int numCalles;
-	private int callesCerradas;
-	private int numInt;
-	private int contador = 0;
-	private Random randNum = new Random();
+	private static int [][] grafo;
+	private static boolean [][] disponibilidad;
+	private static int [] velocidades;
+	private static int numCalles;
+	private static int callesCerradas;
+	private static int numInt;
+	private static  int contador = 0;
+	private static boolean iniciado=false;
+	private static Random randNum = new Random();
 	
-	public GrafoCalles(int [] vel){
+	public static void hacerGrafoCalles(int [] vel){
 		velocidades= vel;
 		numCalles= velocidades.length;
 		numInt= (int)Math.pow(Math.sqrt(numCalles)/2,2);
 		grafo= new int[numInt][numInt];
 		disponibilidad= new boolean[numInt][numInt];
+		iniciado= true;
 		armarGrafo();
 	}
+	
+	public static boolean isCreado(){
+		return iniciado;
+	}
+	
 	//Hacemos al grafo o mapa inicial para los coches..
-	public int [][] getGrafo(){
+	public static int [][] getGrafo(){
 		return grafo;
 	}
 	
-	public boolean estaDisponible (int fil, int col){
+	public static boolean estaDisponible (int fil, int col){
 		contador += 1;
 		if (contador > 5){
 			llenarDisponibles();
@@ -43,7 +50,7 @@ public class GrafoCalles {
 	}
 	
 	
-	public int DisponiblePos (IVector2 pos, int sentido){
+	public static int DisponiblePos (IVector2 pos, int sentido){
 		int x=pos.getXAsInteger();
 		int y=pos.getYAsInteger();
 		int fil = 0;
@@ -83,14 +90,14 @@ public class GrafoCalles {
 	}
 	
 	
-	private void armarGrafo(){
+	private static void armarGrafo(){
 		llenarCeros();
 		llenarDisponibles();
 		armarNorteSur();
 		armarEsteOeste();
 	}
 	
-	private void llenarCeros(){
+	private static void llenarCeros(){
 		for (int i=0; i<numInt; i=i+1){
 			for (int j=0; j<numInt; j=j+1){
 				grafo[i][j]=0;
@@ -98,7 +105,7 @@ public class GrafoCalles {
 		}
 	}
 	
-	private void llenarDisponibles(){
+	private static void llenarDisponibles(){
 		for (int i=0; i<numInt; i=i+1){
 			for (int j=0; j<numInt; j=j+1){
 				disponibilidad[i][j]=true;
@@ -106,7 +113,7 @@ public class GrafoCalles {
 		}
 	}
 	
-	private void armarEsteOeste(){
+	private static void armarEsteOeste(){
 		int tope= numCalles/2;
 		int inc= (int)Math.sqrt(numInt);
 		int aux=0;
@@ -124,7 +131,7 @@ public class GrafoCalles {
 		}
 	}
 	
-	private void armarNorteSur(){
+	private static void armarNorteSur(){
 		int tope= numCalles/2;
 		int inc= (int)Math.sqrt(numInt);
 		int aux=0;

@@ -6,6 +6,7 @@ package cars;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import environment.GrafoCalles;
 import environment.posDisponible;
@@ -58,7 +59,6 @@ import lights.PosicionSemaforo;
 @Arguments({
 	  @Argument(name="pxin", clazz=Double.class, defaultvalue="0.0"),
 	  @Argument(name="pyin", clazz=Double.class, defaultvalue="0.0"),
-	  @Argument(name="map", clazz=GrafoCalles.class, defaultvalue="null"),
 	  @Argument(name= "goalx", clazz=Double.class, defaultvalue="0.0"),
 	  @Argument(name= "goaly", clazz= Double.class, defaultvalue="0.0"),
 	  @Argument(name= "intel", clazz= Boolean.class, defaultvalue="false"),
@@ -88,7 +88,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	@Belief
 	private boolean intel;
 	@Belief
-	private GrafoCalles gc;
+	private int [][] gc;
 	@Belief
 	private String tipoRuta;
 	@Belief
@@ -118,7 +118,6 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		this.x_fin= (Double) agent.getArgument("goalx");
 		this.y_fin= (Double) agent.getArgument("goaly");
 		this.tipoRuta= (String) agent.getArgument("ruta");
-		this.gc= (GrafoCalles) agent.getArgument("map");
 		this.status= true;
 		this.direccion= 1;
 		this.ea= new EstadoAuto(0, direccion, pox, poy, x_fin, y_fin, status);
@@ -186,7 +185,7 @@ public class SimpleCarBDI implements IEstadoAutoService {
 		int ny1= (y1-1)/10;
 		int nx2= (x2-1)/10;
 		int ny2= (y2-1)/10;
-		int tam= (int)Math.sqrt(gc.getGrafo().length);
+		int tam= (int)Math.sqrt(gc.length);
 		int [][] mapa2= new int[tam][tam];
 		int cont=0;
 		for(int i=0; i<tam; i=i+1){
@@ -236,7 +235,8 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	}
 	
 	private void calcularRuta(int[][] mapa, int orig, int dest){
-		String r= Rutas.getRutaRandom(mapa, orig, dest);
+//		String r= Rutas.getRutaRandom(mapa, orig, dest);
+		String r= Rutas.getRutaDijstra(mapa, orig, dest);
 		ruta= r.split(" ");
 	}
 	
@@ -273,9 +273,43 @@ public class SimpleCarBDI implements IEstadoAutoService {
 			poy=ytot-1;
 	}
 	
+	private synchronized void crearMapa(){
+		if (!GrafoCalles.isCreado()){
+			int[] vel= new int[36];
+			for (int i=0; i<vel.length; i=i+1){
+				vel[i]=i+1;
+			}
+			GrafoCalles.hacerGrafoCalles(vel);
+		}
+		gc= GrafoCalles.getGrafo();
+		
+	}
+	
+	private int [] convertirRuta(String [] r){
+		int [] nr= new int[r.length];
+		for (int i=0; i<nr.length; i=i+1){
+			if (r[i].equals("n"))
+				nr[i]=1;
+			else if (r[i].equals("e"))
+				nr[i]=2;
+			else if (r[i].equals("s"))
+				nr[i]=3;
+			else if (r[i].equals("o"))
+				nr[i]=4;
+		}
+		return nr;
+	}
+	
 	@AgentBody
 	public void body(){
 		obtenerPos();
+		crearMapa();
+		calcularRuta(gc, 0, 5);
+		
+		for(int i=0; i<ruta.length; i=i+1){
+			System.out.print(ruta[i]+"  ");
+		}
+		
 		int [] camino={2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2};
 		while(true){
 			for(int i=0; i<camino.length; i=i+1){
