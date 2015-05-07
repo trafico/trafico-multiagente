@@ -119,7 +119,7 @@
 				</env:perceptgenerator>
 				
 				Percept processors consume percepts and push them into the agents.
-				<env:perceptprocessor componenttype="Collector" class="DefaultBDIVisionProcessor" >
+				<env:perceptprocessor componenttype="Automovil" class="DefaultBDIVisionProcessor" >
 					<env:property name="percepttypes">
 						new Object[]
 						{
