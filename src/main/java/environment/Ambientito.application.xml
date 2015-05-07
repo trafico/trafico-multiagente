@@ -33,6 +33,7 @@
 					<env:property name="vision_range">2</env:property>
 					<env:property name="position"></env:property>
 					<env:property name="velocidad" event="true"/>
+					<env:property name="direccion">1</env:property>
 		</env:objecttype>
 		
 		<env:objecttype name="semaforo">
@@ -150,7 +151,18 @@
 						</env:drawable>
 						<env:drawable objecttype="automovil" width="1" height="1" >
 								<!--<env:property name="vision_size" dynamic="true">new Vector2Double($object.vision_range*2+1)</env:property>-->
-								<env:texturedrectangle layer="1" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito.png"/>
+								<env:texturedrectangle layer="1" height="2" width="1" imagepath="src/main/java/environment/imagenes/carrito1.png">
+									<env:drawcondition>$object.getProperty("direccion")==1</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito2.png">
+									<env:drawcondition>$object.getProperty("direccion")==2</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="2" width="1" imagepath="src/main/java/environment/imagenes/carrito3.png">
+									<env:drawcondition>$object.getProperty("direccion")==3</env:drawcondition>
+								</env:texturedrectangle>
+								<env:texturedrectangle layer="1" height="1" width="2" imagepath="src/main/java/environment/imagenes/carrito4.png">
+									<env:drawcondition>$object.getProperty("direccion")==4</env:drawcondition>
+								</env:texturedrectangle>
 								<!--<env:rectangle layer="0" size="vision_size" color="#ffff007f" />-->
 						</env:drawable>
 						<env:drawable objecttype="semaforo" width="1" height="1" >
