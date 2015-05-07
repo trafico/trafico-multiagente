@@ -213,12 +213,12 @@ public class SimpleCarBDI implements IEstadoAutoService {
 						public void resultAvailable(Collection<IEstadoAutoService> arg0) {
 							for (Iterator<IEstadoAutoService> iterator = arg0.iterator(); iterator.hasNext();) {
 						        EstadoAuto esa = iterator.next().getEstadoAuto().get();
-						        if(getDistancia(esa.getPox(),pox, esa.getPoy(), poy)<1){
+						        if(getDistancia(esa.getPox(),pox, esa.getPoy(), poy)<1 && esa.getDir()==direccion){
 						        	System.out.println("Se saltó a sí mismo");
 						        	continue;
 						     
 						        }
-						        if(getDistancia(esa.getPox(),pox, esa.getPoy(), poy)<=1.3){
+						        if(getDistancia(esa.getPox(),pox, esa.getPoy(), poy)<=1.3 && esa.getDir()==direccion){
 						        	System.out.println(getDistancia(esa.getPox(),pox, esa.getPoy(), poy));
 						        	carSig= true;
 						        }
@@ -237,28 +237,29 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	}
 	
 	private void calcularRuta(int[][] mapa, int orig, int dest){
-//		String r= Rutas.getRutaRandom(mapa, orig, dest);
-		String r= Rutas.getRutaDijstra(mapa, orig, dest);
+		String r= Rutas.getRutaRandom(mapa, orig, dest);
+//		String r= Rutas.getRutaDijstra(mapa, orig, dest);
 		ruta= r.split(" ");
 	}
 	
 	private double analizarX(double x){
 		double nx=x;
 		int xtot= area.getXAsInteger();
-		if(nx>=xtot)
-			nx=0;
+//		System.out.println(xtot);
+		if(nx>xtot)
+			nx=1;
 		if(nx<0)
-			nx=xtot-1;
+			nx=xtot;
 		return nx;
 	}
 	
 	private double analizarY(double y){
 		double ny=y;
 		int ytot= area.getYAsInteger();
-		if(ny>= ytot)
-			ny=0;
+		if(ny> ytot)
+			ny=1;
 		if(ny<0)
-			ny=ytot-1;
+			ny=ytot;
 		return ny;
 	}
 	
@@ -306,13 +307,6 @@ public class SimpleCarBDI implements IEstadoAutoService {
 	public void body(){
 		obtenerPos();
 		crearMapa();
-//		calcularRuta(gc, 0, 5);
-		
-//		for(int i=0; i<ruta.length; i=i+1){
-//			System.out.print(ruta[i]+"  ");
-//		}
-		
-//		int [] camino={2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2};
 		while(true){
 			IVector2 goal=posDisponible.getPosicion();
 			this.x_fin= goal.getXAsDouble();
@@ -332,6 +326,8 @@ public class SimpleCarBDI implements IEstadoAutoService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				System.out.println(pox+"  "+poy);
+				System.out.println(x_fin+"  "+y_fin);
 			}
 			
 			
