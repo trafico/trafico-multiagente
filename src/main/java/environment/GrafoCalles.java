@@ -43,22 +43,44 @@ public class GrafoCalles {
 	}
 	
 	
-	/*public boolean estaDisponiblePos (IVector2 pos, int sentido){
+	public int DisponiblePos (IVector2 pos, int sentido){
 		int x=pos.getXAsInteger();
 		int y=pos.getYAsInteger();
+		int fil = 0;
+		int col = 0;
+		int inicio =0;
+		int fin = 0;
 		int tamaño = (int)Math.sqrt(numInt);
 		
 		if (sentido == 1){
-		//fil = 
+			fil = (int)(y/10)* tamaño;
+			col = (int)x/10 + 1;
+			fin = fil + col;
+			inicio = fin-1;
 		}
 		else{
-			
+			fil = (int)y/10;
+			col = (int)(x/10 + 1)*tamaño;
+			fin = fil + col;
+			inicio = fin-tamaño;
+			if (fin >numInt){
+				fin=fin-numInt;
+			}
 		}
 		
-		boolean disponible = disponibilidad[fil][col];
+		//System.out.println(inicio+" " +fin);
+		
+		boolean disponible = disponibilidad[inicio][fin];
+		int resp=0;
+		if (disponible==true){
+			resp=1;
+		}
+		else{
+			resp=0;
+		}
 
-		return disponible;	
-	}*/
+		return resp;	
+	}
 	
 	
 	private void armarGrafo(){

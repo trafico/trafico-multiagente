@@ -1,5 +1,7 @@
 package environment;
 
+import jadex.extension.envsupport.math.Vector2Double;
+
 import java.util.Random;
 
 public class main {
@@ -19,11 +21,17 @@ public class main {
 			}
 			System.out.println();
 		}*/
-		int numInt= (int)Math.pow(Math.sqrt(vel.length)/2,2);
+		/*int numInt= (int)Math.pow(Math.sqrt(vel.length)/2,2);
 		for (int i=0; i<50; i=i+1){
 			boolean disp = gc.estaDisponible((int)(randNum.nextDouble()*numInt),(int)(randNum.nextDouble()*numInt));
 			System.out.println(disp);
-		}
+		}*/
+		
+		//boolean disp = gc.DisponiblePos(new Vector2Double(11.5, 16),2);
+		//boolean disp2 = gc.DisponiblePos(new Vector2Double(21.5, 26),2);
+		//boolean disp3 = gc.DisponiblePos(new Vector2Double(0.5, 6),2);
+		
+		
 		
 		
 	}

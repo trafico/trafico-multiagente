@@ -42,9 +42,6 @@
 		</env:objecttype>
 		<env:objecttype name="calleHE">
 					<env:property name="velocidad">10</env:property>
-					<env:property name="disponible" dynamic=true>
-					
-					</env:property>
 					<env:property name="position"/>
 		</env:objecttype>
 		<env:objecttype name="calleHO">
