@@ -90,6 +90,30 @@ This project can be imported into IDEs like eclipse.
                                    and SemaforoSimpleBDI.class agents.
 * Environment.imagenes: Contains all the images used by the environment.
 * Lights:
+     -SemaforoSimpleBDI.java : Implements simple car. It uses a simple counter to 
+                               change the line of one direction: North, South,East and West. 
+                               Every 10 seconds the light changes its current line.
+                               
+    -SemaforoEgoistaBDI.java : This class has the same methods and services as SemaforoSimpleBDI.
+                               It also has communication with his neighbors and it chooses the line
+                               with the highest number of cars.
+                               
+    -SemaforoComunicacionBDI.java: This class has the same methods and serivces as SemaforoSimpleBDI.
+                                   It communicates with his neighbors and obtains the number of cars 
+                                   of their lines. If the number of cars of his neighbors its bigger 
+                                   than its one line, it can change the current line to help its
+                                   neighbors.
+                                   
+    EstadoSemaforoService.java: The service of lights to cars, it returns the position and its direction
+                                The position is a pair of integers and a string that represents a direction
+                               
+    TraficoSemaforo.java: A container of traffic information.
+                          
+    PaqueteTrafico.java: A container of every line and its current number of cars.
+                         
+    TraficoEstadoSemaforo.java: Ther service of lights to lights. It returns an instance of PaqueteTrafico
+                          
+    PosicionSemaforo.java: Container for the state of a light.
 
 ======== How to run application ========
 * Generate a starter to this project following last instruction of section
