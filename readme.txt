@@ -70,6 +70,46 @@ This project can be imported into IDEs like eclipse.
   
 ======== Packages of Funccional branch ========
 * Cars:
+     - SimpleCarBDI.java: This java class defines two posibles car agents: the intelligent car using Dijkstra algorithm to
+                          to compute its trajectory in the environment and the random car using a random strategy to reach 
+                          its goal through the streets regardless of the speed of these. 
+                          At this time, the selection of the types of agents is done by calling "calcularRuta()" method, 
+                          which lets you select between random route or using Dijkstra algorithm to achieve the objective point.
+                          At the beginning of its operation, a "EstadoAuto" object is created, containing information on the 
+                          current status of the agent properties, this object is to be passed as a service to other agents such 
+                          car and traffic lights. The "EstadoAuto" object is updated with each change of agent properties.
+                          Once the initial position of agent in the environment is determined, a target point randomly defined by 
+                          the static method "posDisponible.getPosicion ()" in the enviroment packet, then the route to follow by the car
+                          is determined depending on the defined agent behavior. The car begins to make its way step by step, 
+                          taking the status of agents around him, stopping when a car in front and equal to his direction 
+                          and making stops when it arrives to an intersection with a traffic light and red light in the direction 
+                          to which it is directed.
+                          In the current version of this agent execution it comes at the end when successfully reaches the target 
+                          point on the map.
+     
+     -IEstadoAutoService.java: This java interface defines the provided service by the Car agent to other agents in the enviroment.
+                               The service provides a "EstadoAuto" object type containing information of current properties in the agent 
+                               through an "IFuture" container in Jadex definition.
+                               
+     -Rutas.java: This java class contains static methods that allows to the agent calculate a route from a given initial point to destination 
+                  point in the environment. 
+                  * getRutaDijstra(): It is a static method that provides a char string corresponding to the route for the car agent.
+                                      This path is calculated by Dijkstra algorithm implementation for the optimal path between two vertices 
+                                      in a graph where each edge corresponds to the speed of the roads between the intersections. 
+                                      This method aims to select the best option for the agent to reach its destination within the environment.
+                  *getRutaRandom(): It is also a static method that returns a character string corresponding to a way forward for the car. 
+                                    The selection of nodes on the map is done randomly from the starting point to the target regardless street speeds.
+                  *devolverRuta(): It is a method that interprets a route generated as a char string understandable for car agent. For example, 
+                                   the string "n n n s s s" indicates three movements of the car towards the north and three moves south in
+                                   the environment.
+                                   
+     -Grafo.java: This java class contains auxiliary data structures that allow us to interpret the environment as a directed graph, taking the 
+                  intersections of the environment as vertices of a graph and information from the streets as edges. These data structures are
+                  used in "Rutas.java" java class to generate paths between points in the environment.
+                  
+     *Other files as "SimpleCarBDI.agent.xml" and "DestinoPlan.java" correspond to the implementation of the Car agent on BDI Jadex version V2.
+      Jadex BDI V3 version is used, this allows to development agents using only Java code for better functioning.
+
 * Environment:
      - GrafoCalles.java: Generates an array of streets with its velocity,
                          also an array of availability which change every
