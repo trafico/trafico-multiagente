@@ -56,8 +56,8 @@ This project can be imported into IDEs like eclipse.
   
   
 ======== Description of branches ========
-* Master: Just dummie classes.
-* Test: Just dummie classes.
+* Master: Just dummy classes.
+* Test: Just dummy classes.
 * Develop: Classes developed to Jadex 2.3, without integration of agents
   in the environment, just test agents with interction with others of 
   the same type but not with other types.
@@ -75,7 +75,7 @@ This project can be imported into IDEs like eclipse.
                          also an array of availability which change every
                          five "estaDisponible()" method calls to give or
                          take availability of random streets.
-     - HelloAgent.java: Dummie class
+     - HelloAgent.java: Dummy class
      - main.java: Used to run "GrafoCalles.java" alone.
      - MoveTask.java: Defines the task of movement of an agent. (Not used)
      - posDisponible.java: Gives random available positions. Is used by 
